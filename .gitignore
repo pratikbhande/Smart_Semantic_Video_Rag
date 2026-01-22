@@ -1,0 +1,100 @@
+# =========================
+# Python bytecode & cache
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# =========================
+# Virtual environments
+# =========================
+venv/
+.venv/
+env/
+ENV/
+virtualenv/
+.python-version
+
+# =========================
+# Distribution / packaging
+# =========================
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# =========================
+# Test & coverage reports
+# =========================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+hypothesis/
+
+# =========================
+# Logs & runtime files
+# =========================
+*.log
+logs/
+*.pid
+*.out
+
+# =========================
+# Environment variables / secrets
+# =========================
+.env
+.env.*
+secrets/
+config/local.yaml
+
+# =========================
+# Jupyter / IPython
+# =========================
+.ipynb_checkpoints/
+profile_default/
+ipython_config.py
+
+# =========================
+# ML / Data science artifacts
+# =========================
+data/
+datasets/
+*.h5
+*.pkl
+*.joblib
+*.pt
+*.pth
+mlruns/
+wandb/
+
+# =========================
+# IDEs & editors
+# =========================
+.vscode/
+.idea/
+*.iml
+.spyderproject
+.spyproject
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Docker
+# =========================
+.dockerignore
+docker-compose.override.yml
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.swp
+*~

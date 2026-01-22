@@ -1,0 +1,17 @@
+streamlit
+opencv-python
+openai
+chromadb
+networkx
+plotly
+numpy
+Pillow
+python-dotenv
+scipy
+openai-whisper
+moviepy
+ffmpeg-python
+torch
+torchvision
+scikit-learn
+scikit-image
