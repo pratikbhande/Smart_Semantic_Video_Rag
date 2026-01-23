@@ -136,7 +136,17 @@ def process_video(video_file):
             if audio_processor.extract_audio(str(video_path), str(audio_path)):
                 audio_transcription = audio_processor.transcribe_audio(str(audio_path))
                 if audio_transcription["segments"]:
-                    st.info(f"🎵 Transcribed {len(audio_transcription['segments'])} audio segments")
+                    word_count = len(audio_transcription["full_text"].split())
+                    st.success(f"🎵 Audio Transcribed: {len(audio_transcription['segments'])} segments, {word_count} words")
+                    # ✅ ADD: Show sample transcription
+                    if audio_transcription["full_text"]:
+                        with st.expander("📝 View Transcription Sample"):
+                            sample = audio_transcription["full_text"][:300]
+                            st.caption(sample + "..." if len(audio_transcription["full_text"]) > 300 else sample)
+                else:
+                    st.warning("⚠️ Audio track found but transcription is empty")
+            else:
+                st.warning("⚠️ No audio track found in video")
         
         progress_bar.progress(40)
         
@@ -723,6 +733,11 @@ def main():
                                 if metadata.get('extracted_text'):
                                     with st.expander("📝 Extracted Text (OpenAI OCR)", expanded=True):
                                         st.code(metadata['extracted_text'], language=None)
+                                
+                                # ✅ ADD: Display audio context
+                                if metadata.get('audio_context'):
+                                    with st.expander("🎤 Audio Transcript", expanded=False):
+                                        st.caption(metadata['audio_context'])
                                 
                                 # People information
                                 if metadata.get('people'):

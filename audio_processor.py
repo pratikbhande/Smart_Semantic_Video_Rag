@@ -27,7 +27,12 @@ class AudioProcessor:
             
             if video.audio is None:
                 print("⚠️  No audio track found in video")
+                video.close()  # ✅ ADD: Close video even on failure
                 return False
+            
+            # ✅ ADD: Check audio duration
+            audio_duration = video.audio.duration
+            print(f"🎵 Found audio track (duration: {audio_duration:.1f}s)")
             
             video.audio.write_audiofile(
                 output_path,
@@ -37,12 +42,13 @@ class AudioProcessor:
             )
             
             video.close()
+            print(f"✅ Audio extracted successfully")
             return True
             
         except Exception as e:
-            print(f"Error extracting audio: {str(e)}")
+            print(f"❌ Error extracting audio: {str(e)}")
             return False
-    
+        
     def transcribe_audio(self, audio_path: str) -> Dict:
         """Transcribe audio using Whisper."""
         if not config.ENABLE_AUDIO or self.model is None:
@@ -53,6 +59,8 @@ class AudioProcessor:
             }
         
         try:
+            print(f"🎤 Transcribing audio with Whisper ({config.WHISPER_MODEL})...")
+            
             # Transcribe with Whisper
             result = self.model.transcribe(
                 audio_path,
@@ -72,6 +80,18 @@ class AudioProcessor:
             
             full_text = result.get("text", "").strip()
             
+            # ✅ ADD: Transcription statistics
+            word_count = len(full_text.split())
+            print(f"✅ Transcription complete:")
+            print(f"   - Segments: {len(segments)}")
+            print(f"   - Words: {word_count}")
+            print(f"   - Language: {result.get('language', 'en')}")
+            
+            # ✅ ADD: Show sample
+            if full_text:
+                sample = full_text[:150] + "..." if len(full_text) > 150 else full_text
+                print(f"   - Sample: {sample}\n")
+            
             return {
                 "full_text": full_text,
                 "segments": segments,
@@ -79,7 +99,7 @@ class AudioProcessor:
             }
             
         except Exception as e:
-            print(f"Transcription error: {str(e)}")
+            print(f"❌ Transcription error: {str(e)}")
             return {
                 "full_text": "",
                 "segments": [],

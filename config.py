@@ -34,7 +34,7 @@ MIN_KEYFRAME_INTERVAL_SECONDS = 0.5
 TEXT_SIMILARITY_THRESHOLD = 0.85
 
 # 30% of pixels must change
-PIXEL_CHANGE_THRESHOLD = 0.30
+PIXEL_CHANGE_THRESHOLD = 0.80
 
 # Text detection enabled
 TEXT_DETECTION_ENABLED = True
@@ -42,7 +42,7 @@ TEXT_DETECTION_ENABLED = True
 # ============================================================
 # AUDIO
 # ============================================================
-ENABLE_AUDIO = False
+ENABLE_AUDIO = True
 WHISPER_MODEL = "base"
 AUDIO_SAMPLE_RATE = 16000
 
