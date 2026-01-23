@@ -64,7 +64,10 @@ class AdvancedVideoProcessor:
         return f"data:image/jpeg;base64,{base64.b64encode(buffer).decode('utf-8')}"
     
     def _extract_text(self, frame: np.ndarray) -> str:
-        """Extract text using OpenAI Vision API - SIMPLIFIED."""
+        """
+        Extract text using OpenAI Vision API.
+        HARDCODED response format to avoid refusals.
+        """
         try:
             response = self.client.chat.completions.create(
                 model=config.VISION_MODEL,
@@ -73,7 +76,20 @@ class AdvancedVideoProcessor:
                     "content": [
                         {
                             "type": "text",
-                            "text": "Extract all text visible in this image. Return only the extracted text, nothing else. If there's no text, return empty."
+                            "text": """You are a text extraction tool. Extract ONLY visible text overlays, captions, signs, or subtitles from this image.
+
+    RULES:
+    - Do NOT describe people, faces, or identify anyone
+    - Do NOT say "I'm sorry" or "I can't"
+    - ONLY extract visible TEXT (words, captions, signs)
+    - If NO text is visible, respond with exactly: NONE
+
+    Examples:
+    - Image with "Subscribe Now" overlay → Return: Subscribe Now
+    - Image with person but no text → Return: NONE
+    - Image with "Episode 5" caption → Return: Episode 5
+
+    Your response:"""
                         },
                         {
                             "type": "image_url",
@@ -81,11 +97,24 @@ class AdvancedVideoProcessor:
                         }
                     ]
                 }],
-                max_tokens=500
+                max_tokens=300,
+                temperature=0.0
             )
             
             text = response.choices[0].message.content.strip()
-            return text if text and text.upper() != "NONE" else ""
+            
+            # Filter out any refusal that slips through
+            refusal_keywords = ["sorry", "can't", "cannot", "unable", "apologize"]
+            text_lower = text.lower()
+            
+            if any(keyword in text_lower for keyword in refusal_keywords):
+                return ""  # Treat as no text
+            
+            # Check for explicit NONE
+            if text.upper() == "NONE" or not text:
+                return ""
+            
+            return text
             
         except Exception as e:
             print(f"❌ OCR error: {e}")

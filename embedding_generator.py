@@ -92,6 +92,7 @@ class EmbeddingGenerator:
                 "main_subject": kf_data["semantic_data"]["main_subject"],
                 "scene_type": kf_data["semantic_data"]["scene_type"],
                 "text_content": kf_data["semantic_data"].get("text_content", ""),
+                "audio_context": kf_data.get("audio_context", ""),  # ✅ ADD THIS LINE
                 "differential_norm": diff_norm
             }
             
