@@ -146,13 +146,38 @@ class AdvancedVideoProcessor:
         
         return changed_pixels / total_pixels
     
+    # ✅ FIX: Add flicker detection
+    def _should_ignore_text_flicker(self, current_text: str, last_text: str, 
+                                     text_history: list) -> bool:
+        """
+        Check if this is OCR flicker by looking at text history.
+        If the "new" text matches recent history, it's probably flicker.
+        """
+        if not text_history:
+            return False
+        
+        # Normalize current text
+        current_norm = " ".join(current_text.lower().split()) if current_text else ""
+        
+        # Check last 3 texts
+        for prev_text in text_history[-3:]:
+            prev_norm = " ".join(prev_text.lower().split()) if prev_text else ""
+            
+            if current_norm and prev_norm:
+                similarity = self._text_similarity(current_norm, prev_norm)
+                if similarity >= 0.90:
+                    # This "new" text appeared recently - it's flicker
+                    return True
+        
+        return False
+    
     def extract_keyframes(self) -> List[Keyframe]:
         """
         SMART extraction:
-        1. Text APPEARS (was none, now has text) → Extract ✅
-        2. Text CHANGES (was X, now Y) → Extract ✅
-        3. Text SAME → Skip, ignore pixels ⏭️
-        4. NO text → Check 30% pixel change from last keyframe
+        1. Text is DIFFERENT from last keyframe → Extract ✅
+        2. Text is SAME as last keyframe → Skip ⏭️
+        3. BOTH have NO text → Check 30% pixel change
+        4. OCR flicker detection → Skip ⏭️
         """
         keyframes = []
         
@@ -185,21 +210,24 @@ class AdvancedVideoProcessor:
         last_keyframe_text = first_text
         last_keyframe_time = 0.0
         
-        print(f"🚀 Starting SMART extraction...")
-        print(f"   Rule 1: Text APPEARS → Extract immediately")
-        print(f"   Rule 2: Text CHANGES → Extract")
-        print(f"   Rule 3: Text SAME → Skip (ignore pixel changes)")
-        print(f"   Rule 4: NO text → Extract when 30%+ pixels changed from last keyframe")
+        # ✅ FIX: Track recent texts to detect flicker
+        text_history = [first_text]  # Keep last 5 texts
+        
+        print(f"🚀 Starting SMART extraction with OCR flicker detection...")
+        print(f"   Rule 1: Text DIFFERENT from last keyframe → Extract")
+        print(f"   Rule 2: Text SAME as last keyframe → Skip")
+        print(f"   Rule 3: BOTH no text → Check pixels (30%+ threshold)")
+        print(f"   Rule 4: OCR flicker detected → Skip")
         print(f"   Checking every {config.SAMPLE_INTERVAL_SECONDS:.1f}s\n")
         
         # Stats
         total_frames_read = 0
         frames_checked = 0
-        text_appeared = 0
         text_changed = 0
         visual_keyframes = 0
         skipped_text_same = 0
         skipped_pixels_low = 0
+        skipped_flicker = 0  # ✅ NEW
         next_check_time = config.SAMPLE_INTERVAL_SECONDS
         
         while True:
@@ -229,80 +257,99 @@ class AdvancedVideoProcessor:
             
             # Extract text
             current_text = self._extract_text(frame)
-            has_text_now = len(current_text.strip()) > 0
-            had_text_before = len(last_keyframe_text.strip()) > 0
             
-            # Decision logic
+            # ✅ FIX: Check if this is OCR flicker FIRST
+            if self._should_ignore_text_flicker(current_text, last_keyframe_text, text_history):
+                skipped_flicker += 1
+                if frames_checked % 10 == 0:
+                    print(f"   ⚪ {actual_timestamp:.1f}s: OCR flicker detected, skipping")
+                # Add to history but don't extract
+                text_history.append(current_text)
+                if len(text_history) > 5:
+                    text_history.pop(0)
+                continue  # Skip this frame entirely
+            
+            # Add to history
+            text_history.append(current_text)
+            if len(text_history) > 5:
+                text_history.pop(0)  # Keep only last 5
+            
+            # ============================================
+            # Decision Logic
+            # ============================================
             should_extract = False
             change_type = ""
             score = 0.0
             reason = ""
             
-            # ============================================
-            # CASE 1: Text APPEARED (no text → has text)
-            # ============================================
-            if has_text_now and not had_text_before:
-                should_extract = True
-                change_type = "text_appeared"
-                score = 1.0
-                reason = "Text appeared on screen"
-                print(f"   ✅ {actual_timestamp:.1f}s: TEXT APPEARED!")
-                print(f"      New text: {current_text[:60]}")
-                text_appeared += 1
+            # Normalize texts for comparison (handle OCR variations)
+            current_text_normalized = " ".join(current_text.lower().split()) if current_text else ""
+            last_text_normalized = " ".join(last_keyframe_text.lower().split()) if last_keyframe_text else ""
+            
+            # Calculate text similarity
+            if current_text_normalized and last_text_normalized:
+                # Both have text - check if different
+                text_sim = self._text_similarity(current_text_normalized, last_text_normalized)
+                text_is_different = text_sim < config.TEXT_SIMILARITY_THRESHOLD
+            elif current_text_normalized != last_text_normalized:
+                # One has text, other doesn't - they're different
+                text_is_different = True
+                text_sim = 0.0
+            else:
+                # Both empty - same
+                text_is_different = False
+                text_sim = 1.0
             
             # ============================================
-            # CASE 2: Text CHANGED (both have text, but different)
+            # EXTRACT DECISION
             # ============================================
-            elif has_text_now and had_text_before:
-                text_sim = self._text_similarity(last_keyframe_text, current_text)
-                text_is_different = text_sim < config.TEXT_SIMILARITY_THRESHOLD
+            if text_is_different:
+                # Text changed - ALWAYS extract
+                should_extract = True
+                score = 1.0 - text_sim
                 
-                if text_is_different:
-                    should_extract = True
-                    change_type = "text_change"
-                    score = 1.0 - text_sim
-                    reason = f"Text changed (similarity: {text_sim:.2f})"
+                if current_text and not last_keyframe_text:
+                    change_type = "text_appeared"
+                    reason = "Text appeared"
+                    print(f"   ✅ {actual_timestamp:.1f}s: TEXT APPEARED")
+                    print(f"      New: {current_text[:60]}")
+                elif not current_text and last_keyframe_text:
+                    change_type = "text_disappeared"
+                    reason = "Text disappeared"
+                    print(f"   ✅ {actual_timestamp:.1f}s: TEXT DISAPPEARED")
+                    print(f"      Was: {last_keyframe_text[:60]}")
+                else:
+                    change_type = "text_changed"
+                    reason = f"Text changed (sim: {text_sim:.2f})"
                     print(f"   ✅ {actual_timestamp:.1f}s: TEXT CHANGED (sim={text_sim:.2f})")
                     print(f"      Old: {last_keyframe_text[:40]}")
                     print(f"      New: {current_text[:40]}")
-                    text_changed += 1
+                
+                text_changed += 1
+                
+            else:
+                # Text is SAME (or both empty)
+                
+                if not current_text and not last_keyframe_text:
+                    # BOTH have no text - check pixels
+                    pixel_pct = self._pixel_change_percent(last_keyframe_frame, frame)
+                    
+                    if pixel_pct >= config.PIXEL_CHANGE_THRESHOLD:
+                        should_extract = True
+                        change_type = "visual_change"
+                        score = pixel_pct
+                        reason = f"{pixel_pct*100:.1f}% pixels changed"
+                        print(f"   ✅ {actual_timestamp:.1f}s: VISUAL CHANGE ({pixel_pct*100:.1f}%)")
+                        visual_keyframes += 1
+                    else:
+                        skipped_pixels_low += 1
+                        if frames_checked % 10 == 0:
+                            print(f"   ⚪ {actual_timestamp:.1f}s: {pixel_pct*100:.1f}% pixels (below threshold)")
                 else:
-                    # Text exists but is the same - SKIP (even if pixels changed)
+                    # Same text present - SKIP (ignore pixel changes)
                     skipped_text_same += 1
                     if frames_checked % 10 == 0:
-                        print(f"   ⚪ {actual_timestamp:.1f}s: Text unchanged, skipping")
-            
-            # ============================================
-            # CASE 3: Text DISAPPEARED (had text → no text)
-            # ============================================
-            elif not has_text_now and had_text_before:
-                should_extract = True
-                change_type = "text_disappeared"
-                score = 1.0
-                reason = "Text disappeared from screen"
-                print(f"   ✅ {actual_timestamp:.1f}s: TEXT DISAPPEARED")
-                print(f"      Previous text: {last_keyframe_text[:60]}")
-                text_appeared += 1  # Count with appeared
-            
-            # ============================================
-            # CASE 4: NO text (before or now) - check pixels from LAST KEYFRAME
-            # ============================================
-            elif not has_text_now and not had_text_before:
-                pixel_pct = self._pixel_change_percent(last_keyframe_frame, frame)
-                pixels_changed = pixel_pct >= config.PIXEL_CHANGE_THRESHOLD
-                
-                if pixels_changed:
-                    should_extract = True
-                    change_type = "visual_change"
-                    score = pixel_pct
-                    reason = f"{pixel_pct*100:.1f}% pixels changed from last keyframe"
-                    print(f"   ✅ {actual_timestamp:.1f}s: VISUAL CHANGE ({pixel_pct*100:.1f}%)")
-                    print(f"      No text detected")
-                    visual_keyframes += 1
-                else:
-                    skipped_pixels_low += 1
-                    if frames_checked % 10 == 0:
-                        print(f"   ⚪ {actual_timestamp:.1f}s: Only {pixel_pct*100:.1f}% changed (no text)")
+                        print(f"   ⚪ {actual_timestamp:.1f}s: Same text, skipping")
             
             # Extract if needed
             if should_extract:
@@ -346,13 +393,13 @@ class AdvancedVideoProcessor:
         print(f"   Actual FPS: {real_fps:.1f} ({total_frames_read} frames / {self.duration:.1f}s)")
         print(f"   Frames checked: {frames_checked}")
         print(f"\n🔑 Keyframes Breakdown:")
-        print(f"   Text appeared/disappeared: {text_appeared}")
-        print(f"   Text changed: {text_changed}")
+        print(f"   Text changes: {text_changed}")
         print(f"   Visual changes (no text): {visual_keyframes}")
         print(f"   Total: {len(keyframes)}")
         print(f"\n⏭️  Skipped Frames:")
-        print(f"   Text same as last keyframe: {skipped_text_same}")
-        print(f"   <30% pixel change (no text): {skipped_pixels_low}")
+        print(f"   Same text as last keyframe: {skipped_text_same}")
+        print(f"   OCR flicker detected: {skipped_flicker}")  # ✅ NEW
+        print(f"   <{config.PIXEL_CHANGE_THRESHOLD*100:.0f}% pixel change (no text): {skipped_pixels_low}")
         print(f"{'='*80}\n")
         
         return keyframes
