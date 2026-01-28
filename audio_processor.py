@@ -21,30 +21,57 @@ class AudioProcessor:
             self.model = None
     
     def extract_audio(self, video_path: str, output_path: str) -> bool:
-        """Extract audio from video."""
+        """Extract audio from video - handles broken duration metadata."""
         try:
-            video = VideoFileClip(video_path)
-            
-            if video.audio is None:
-                print("⚠️  No audio track found in video")
-                video.close()  # ✅ ADD: Close video even on failure
-                return False
-            
-            # ✅ ADD: Check audio duration
-            audio_duration = video.audio.duration
-            print(f"🎵 Found audio track (duration: {audio_duration:.1f}s)")
-            
-            video.audio.write_audiofile(
-                output_path,
-                fps=config.AUDIO_SAMPLE_RATE,
-                verbose=False,
-                logger=None
-            )
-            
-            video.close()
-            print(f"✅ Audio extracted successfully")
-            return True
-            
+            # ✅ FIX: Try with moviepy first, fall back to direct ffmpeg
+            try:
+                video = VideoFileClip(video_path)
+                
+                if video.audio is None:
+                    print("⚠️  No audio track found in video")
+                    video.close()
+                    return False
+                
+                # Try to get duration safely
+                try:
+                    audio_duration = video.audio.duration
+                    print(f"🎵 Found audio track (duration: {audio_duration:.1f}s)")
+                except:
+                    print(f"🎵 Found audio track (duration unknown - webm file)")
+                
+                video.audio.write_audiofile(
+                    output_path,
+                    fps=config.AUDIO_SAMPLE_RATE,
+                    verbose=False,
+                    logger=None
+                )
+                
+                video.close()
+                print(f"✅ Audio extracted successfully")
+                return True
+                
+            except Exception as moviepy_error:
+                # Fall back to direct ffmpeg
+                print(f"⚠️  Moviepy failed, trying direct ffmpeg...")
+                import subprocess
+                
+                result = subprocess.run([
+                    'ffmpeg', '-i', video_path,
+                    '-vn',  # No video
+                    '-acodec', 'pcm_s16le',
+                    '-ar', str(config.AUDIO_SAMPLE_RATE),
+                    '-ac', '1',  # Mono
+                    '-y',  # Overwrite
+                    output_path
+                ], capture_output=True, text=True, stderr=subprocess.DEVNULL)
+                
+                if result.returncode == 0 and Path(output_path).exists():
+                    print(f"✅ Audio extracted with ffmpeg")
+                    return True
+                else:
+                    print(f"⚠️  No audio track in video")
+                    return False
+                
         except Exception as e:
             print(f"❌ Error extracting audio: {str(e)}")
             return False
@@ -80,14 +107,14 @@ class AudioProcessor:
             
             full_text = result.get("text", "").strip()
             
-            # ✅ ADD: Transcription statistics
+            # Transcription statistics
             word_count = len(full_text.split())
             print(f"✅ Transcription complete:")
             print(f"   - Segments: {len(segments)}")
             print(f"   - Words: {word_count}")
             print(f"   - Language: {result.get('language', 'en')}")
             
-            # ✅ ADD: Show sample
+            # Show sample
             if full_text:
                 sample = full_text[:150] + "..." if len(full_text) > 150 else full_text
                 print(f"   - Sample: {sample}\n")

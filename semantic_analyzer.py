@@ -99,7 +99,7 @@ STRICT RULES:
 
 REQUIRED JSON FORMAT (fill ALL fields):
 {
-  "main_subject": "Description of what's in the frame (2-3 sentences)",
+  "main_subject": "Description of what's in the frame in detail",
   "scene_type": "vlog|presentation|tutorial|product_showcase|gaming|indoor_scene|outdoor_scene|other",
   "extracted_text": "Exact text visible (empty string if none)",
   
