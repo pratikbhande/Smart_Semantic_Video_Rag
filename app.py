@@ -53,6 +53,35 @@ st.markdown("""
         background-color: #f3e5f5;
         color: #7b1fa2;
     }
+    /* Increase font sizes for better screen recording */
+    .stMarkdown, .stText, p, div, span {
+        font-size: 18px !important;
+    }
+    .stCaption {
+        font-size: 16px !important;
+    }
+    code {
+        font-size: 16px !important;
+        line-height: 1.6 !important;
+    }
+    .stCodeBlock {
+        font-size: 16px !important;
+    }
+    /* Increase metric font sizes */
+    [data-testid="stMetricValue"] {
+        font-size: 28px !important;
+    }
+    [data-testid="stMetricLabel"] {
+        font-size: 18px !important;
+    }
+    /* Increase button text */
+    .stButton button {
+        font-size: 18px !important;
+    }
+    /* Increase input text */
+    .stTextInput input {
+        font-size: 18px !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -142,7 +171,7 @@ def process_video(video_file):
                     if audio_transcription["full_text"]:
                         with st.expander("📝 View Transcription Sample"):
                             sample = audio_transcription["full_text"][:300]
-                            st.caption(sample + "..." if len(audio_transcription["full_text"]) > 300 else sample)
+                            st.markdown(f"<p style='font-size: 18px; line-height: 1.8;'>{sample}{'...' if len(audio_transcription['full_text']) > 300 else ''}</p>", unsafe_allow_html=True)
                 else:
                     st.warning("⚠️ Audio track found but transcription is empty")
             else:
@@ -737,7 +766,7 @@ def main():
                                 # ✅ ADD: Display audio context
                                 if metadata.get('audio_context'):
                                     with st.expander("🎤 Audio Transcript", expanded=False):
-                                        st.caption(metadata['audio_context'])
+                                        st.markdown(f"<p style='font-size: 18px; line-height: 1.8;'>{metadata['audio_context']}</p>", unsafe_allow_html=True)
                                 
                                 # People information
                                 if metadata.get('people'):
