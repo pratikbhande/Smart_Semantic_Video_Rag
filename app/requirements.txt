@@ -1,10 +1,10 @@
-streamlit
-opencv-python
-openai
-chromadb
+streamlit>=1.32.0
+opencv-python-headless
+openai>=1.0.0
+chromadb==0.4.24
 networkx
 plotly
-numpy
+numpy<2.0
 Pillow
 python-dotenv
 scipy
@@ -15,4 +15,3 @@ torch
 torchvision
 scikit-learn
 scikit-image
-ffmpeg-python 
