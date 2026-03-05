@@ -4,7 +4,7 @@ import whisper
 import numpy as np
 from pathlib import Path
 from typing import Dict, List
-from moviepy.editor import VideoFileClip
+from moviepy import VideoFileClip
 import config
 
 
@@ -23,7 +23,6 @@ class AudioProcessor:
     def extract_audio(self, video_path: str, output_path: str) -> bool:
         """Extract audio from video - handles broken duration metadata."""
         try:
-            # ✅ FIX: Try with moviepy first, fall back to direct ffmpeg
             try:
                 video = VideoFileClip(video_path)
                 
@@ -32,7 +31,6 @@ class AudioProcessor:
                     video.close()
                     return False
                 
-                # Try to get duration safely
                 try:
                     audio_duration = video.audio.duration
                     print(f"🎵 Found audio track (duration: {audio_duration:.1f}s)")
@@ -51,17 +49,16 @@ class AudioProcessor:
                 return True
                 
             except Exception as moviepy_error:
-                # Fall back to direct ffmpeg
                 print(f"⚠️  Moviepy failed, trying direct ffmpeg...")
                 import subprocess
                 
                 result = subprocess.run([
                     'ffmpeg', '-i', video_path,
-                    '-vn',  # No video
+                    '-vn',
                     '-acodec', 'pcm_s16le',
                     '-ar', str(config.AUDIO_SAMPLE_RATE),
-                    '-ac', '1',  # Mono
-                    '-y',  # Overwrite
+                    '-ac', '1',
+                    '-y',
                     output_path
                 ], capture_output=True, text=True, stderr=subprocess.DEVNULL)
                 
@@ -79,16 +76,11 @@ class AudioProcessor:
     def transcribe_audio(self, audio_path: str) -> Dict:
         """Transcribe audio using Whisper."""
         if not config.ENABLE_AUDIO or self.model is None:
-            return {
-                "full_text": "",
-                "segments": [],
-                "language": "en"
-            }
+            return {"full_text": "", "segments": [], "language": "en"}
         
         try:
             print(f"🎤 Transcribing audio with Whisper ({config.WHISPER_MODEL})...")
             
-            # Transcribe with Whisper
             result = self.model.transcribe(
                 audio_path,
                 language="en",
@@ -96,7 +88,6 @@ class AudioProcessor:
                 verbose=False
             )
             
-            # Extract segments with timestamps
             segments = []
             for segment in result.get("segments", []):
                 segments.append({
@@ -106,15 +97,13 @@ class AudioProcessor:
                 })
             
             full_text = result.get("text", "").strip()
-            
-            # Transcription statistics
             word_count = len(full_text.split())
+            
             print(f"✅ Transcription complete:")
             print(f"   - Segments: {len(segments)}")
             print(f"   - Words: {word_count}")
             print(f"   - Language: {result.get('language', 'en')}")
             
-            # Show sample
             if full_text:
                 sample = full_text[:150] + "..." if len(full_text) > 150 else full_text
                 print(f"   - Sample: {sample}\n")
@@ -127,11 +116,7 @@ class AudioProcessor:
             
         except Exception as e:
             print(f"❌ Transcription error: {str(e)}")
-            return {
-                "full_text": "",
-                "segments": [],
-                "language": "en"
-            }
+            return {"full_text": "", "segments": [], "language": "en"}
     
     def get_audio_at_timestamp(self, segments: List[Dict], timestamp: float, 
                                window: float = 5.0) -> str:
@@ -140,9 +125,7 @@ class AudioProcessor:
             return ""
         
         relevant_segments = []
-        
         for segment in segments:
-            # Check if segment overlaps with window
             if (segment["start"] <= timestamp + window and 
                 segment["end"] >= timestamp - window):
                 relevant_segments.append(segment["text"])

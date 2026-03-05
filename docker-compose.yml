@@ -1,0 +1,32 @@
+services:
+  video-rag:
+    build: .
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    volumes:
+      # 🔥 Source code — edit locally, reflects instantly, no rebuild
+      - ./app:/app
+
+      # Persistent data — survives container restarts
+      - video_rag_data:/app/data
+
+      # Optional: cache Whisper + torch models across rebuilds
+      - model_cache:/root/.cache
+
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+
+    # Limits — tune to your machine
+    deploy:
+      resources:
+        limits:
+          memory: 6g
+
+    restart: unless-stopped
+
+volumes:
+  video_rag_data:
+  model_cache:
