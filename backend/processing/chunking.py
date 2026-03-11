@@ -24,19 +24,28 @@ def build_chunks(
     topics: List[TopicSegment],
     keyframes: List[KeyframeData],
     speaker_events=None,
+    filename: str = "",
 ) -> List[ChunkData]:
     chunks: List[ChunkData] = []
     events = speaker_events or []
 
+    # ── Video-level overview chunk (always first, always indexed) ────────────
+    # This is the PRIMARY retrieval target for cross-video queries.
+    # "What is MCP?" should hit the MCP video's overview chunk before anything else.
+    overview = _build_video_overview_chunk(
+        video_id, filename, topics, segments, keyframes, events
+    )
+    chunks.append(overview)
+
     if not segments:
         # Visual-only: build rich chunks from keyframe analysis
-        chunks = _build_visual_chunks(video_id, topics, keyframes, events)
+        visual_chunks = _build_visual_chunks(video_id, topics, keyframes, events)
+        chunks.extend(visual_chunks)
         logger.info(
             f"Built {len(chunks)} visual-only chunks "
             f"({sum(1 for c in chunks if c.chunk_type == ChunkType.summary)} summary, "
             f"{sum(1 for c in chunks if c.chunk_type == ChunkType.detail)} detail)"
         )
-        # Add speaker timeline chunk if we have events
         if events:
             chunks.append(_build_speaker_timeline_chunk(video_id, events))
         return chunks
@@ -52,6 +61,13 @@ def build_chunks(
         visual_ctx = _build_visual_context(topic_frames)
         chunk_id = f"{video_id}_topic_{topic_idx}_summary"
 
+        # Segment timestamps stored in summary metadata so _refine_to_segment
+        # can snap primary_timestamp to an exact spoken line even from a summary chunk.
+        summary_seg_times = json.dumps([
+            {"start": s.start_time, "end": s.end_time, "text": s.text[:80]}
+            for s in topic_segs[:40]
+        ])
+
         chunks.append(ChunkData(
             id=chunk_id,
             text=summary_text,
@@ -65,6 +81,7 @@ def build_chunks(
                 "topic_index": topic_idx,
                 "key_entities": topic.key_entities,
                 "frame_count": len(topic_frames),
+                "segment_timestamps": summary_seg_times,
             }
         ))
 
@@ -83,6 +100,117 @@ def build_chunks(
         f"{sum(1 for c in chunks if c.chunk_type == ChunkType.detail)} detail)"
     )
     return chunks
+
+
+# ── Video-level overview chunk ────────────────────────────────────────────────
+
+def _build_video_overview_chunk(
+    video_id: str,
+    filename: str,
+    topics: List[TopicSegment],
+    segments: List[TranscriptSegment],
+    keyframes: List[KeyframeData],
+    speaker_events=None,
+) -> ChunkData:
+    """
+    One comprehensive chunk covering the ENTIRE video — audio + visual combined.
+
+    This is the PRIMARY retrieval target for cross-video queries.
+    When someone asks "what is MCP?", this chunk (which explicitly states
+    all topics, key concepts, and the opening transcript) should rank #1
+    for the MCP video and far above any chunk from an unrelated video.
+
+    Includes:
+    - Filename (often contains the topic, e.g. "mcp_tutorial.webm")
+    - All topic titles + summaries
+    - All key entities from all topics (the concepts discussed)
+    - Full transcript in timestamped format (up to 120 segments)
+    - All unique OCR text from slides/screen across the whole video
+    - Speaker names
+    """
+    events = speaker_events or []
+
+    # All key entities from all topics — deduplicated
+    all_entities: List[str] = []
+    seen_ents: set = set()
+    for t in topics:
+        for e in (t.key_entities or []):
+            if e not in seen_ents:
+                all_entities.append(e)
+                seen_ents.add(e)
+
+    # Topic outline with timestamps + summaries
+    topic_outline = []
+    for t in topics:
+        line = f"  [{t.start_time:.0f}s–{t.end_time:.0f}s] {t.title}"
+        if t.summary:
+            line += f": {t.summary[:150]}"
+        topic_outline.append(line)
+
+    # Full transcript in timestamped format — up to 120 segments
+    transcript_lines = "\n".join(
+        f"[{s.start_time:.1f}s] {s.text}" for s in segments[:120]
+    )
+
+    # All unique OCR text from the entire video (slides, code, UI, captions)
+    video_end = topics[-1].end_time if topics else (
+        segments[-1].end_time if segments else 9999.0
+    )
+    all_ocr = _collect_topic_ocr_texts(events, 0.0, video_end)
+
+    # All speaker names (keyframe OCR + dense scan)
+    speaker_names = _collect_speaker_names(keyframes)
+    for e in events:
+        if e.speaker_name and e.speaker_name not in speaker_names:
+            speaker_names.append(e.speaker_name)
+
+    # Build the overview text
+    label = filename if filename else video_id
+    parts = [f"[VIDEO OVERVIEW: {label}]"]
+
+    if all_entities:
+        parts.append(f"Topics and concepts covered: {', '.join(all_entities[:30])}")
+
+    if topic_outline:
+        parts.append("Sections:\n" + "\n".join(topic_outline))
+
+    if speaker_names:
+        parts.append(f"Speakers: {', '.join(speaker_names[:8])}")
+
+    if transcript_lines:
+        parts.append(f"Full transcript:\n{transcript_lines}")
+    elif keyframes:
+        # Visual-only: use GPT-4o frame descriptions instead
+        descs = []
+        for f in keyframes[:20]:
+            d = f.visual_analysis.get("description", "")
+            if d:
+                descs.append(f"[{f.timestamp:.1f}s] {d}")
+        if descs:
+            parts.append("Visual content:\n" + "\n".join(descs))
+
+    if all_ocr:
+        parts.append(f"On-screen text (slides, code, UI):\n{all_ocr}")
+
+    # Segment timestamps — first 40 segments for _refine_to_segment precision
+    seg_times = json.dumps([
+        {"start": s.start_time, "end": s.end_time, "text": s.text[:80]}
+        for s in segments[:40]
+    ])
+
+    return ChunkData(
+        id=f"{video_id}_overview",
+        text="\n".join(parts),
+        chunk_type=ChunkType.summary,
+        start_time=0.0,
+        end_time=video_end if video_end < 9999.0 else 0.0,
+        topic_title="Video Overview",
+        metadata={
+            "video_id": video_id,
+            "topic_count": len(topics),
+            "segment_timestamps": seg_times,
+        }
+    )
 
 
 # ── Visual-only chunk builders ────────────────────────────────────────────────
@@ -420,9 +548,13 @@ def _build_summary_text(
     if topic.key_entities:
         parts.append(f"Key topics: {', '.join(topic.key_entities)}")
 
-    transcript_text = " ".join(s.text for s in segments)
-    if transcript_text:
-        parts.append(f"Transcript: {transcript_text[:2000]}")
+    # Use timestamped lines (same format as detail chunks) so GPT-4o can
+    # reference precise spoken moments from summary chunks too.
+    if segments:
+        timestamped_lines = "\n".join(
+            f"[{s.start_time:.1f}s] {s.text}" for s in segments[:80]
+        )
+        parts.append(f"Transcript:\n{timestamped_lines}")
 
     scene_types = list(set(f.scene_type for f in frames if f.scene_type != "unknown"))
     if scene_types:

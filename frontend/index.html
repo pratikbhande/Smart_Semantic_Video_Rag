@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,7 +24,11 @@
       --error: #ff6584;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background: var(--bg-primary);
@@ -36,10 +41,23 @@
     }
 
     /* Scrollbar */
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 2px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
 
     /* Header */
     header {
@@ -63,10 +81,13 @@
     }
 
     .logo-icon {
-      width: 32px; height: 32px;
+      width: 32px;
+      height: 32px;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 16px;
     }
 
@@ -139,7 +160,10 @@
       gap: 12px;
     }
 
-    .no-video-placeholder .icon { font-size: 48px; opacity: 0.4; }
+    .no-video-placeholder .icon {
+      font-size: 48px;
+      opacity: 0.4;
+    }
 
     /* Timeline */
     .timeline-container {
@@ -200,7 +224,9 @@
       z-index: 50;
     }
 
-    .timeline-marker:hover .timeline-tooltip { display: block; }
+    .timeline-marker:hover .timeline-tooltip {
+      display: block;
+    }
 
     .timeline-time {
       display: flex;
@@ -231,8 +257,15 @@
       font-weight: 600;
     }
 
-    .badge-green { background: rgba(67, 216, 141, 0.15); color: var(--success); }
-    .badge-gray { background: rgba(144, 144, 176, 0.15); color: var(--text-muted); }
+    .badge-green {
+      background: rgba(67, 216, 141, 0.15);
+      color: var(--success);
+    }
+
+    .badge-gray {
+      background: rgba(144, 144, 176, 0.15);
+      color: var(--text-muted);
+    }
 
     .transcript-seg {
       padding: 6px 10px;
@@ -245,8 +278,14 @@
       align-items: flex-start;
     }
 
-    .transcript-seg:hover { background: var(--bg-elevated); }
-    .transcript-seg.active { background: rgba(108, 99, 255, 0.15); border-left: 2px solid var(--accent); }
+    .transcript-seg:hover {
+      background: var(--bg-elevated);
+    }
+
+    .transcript-seg.active {
+      background: rgba(108, 99, 255, 0.15);
+      border-left: 2px solid var(--accent);
+    }
 
     .seg-time {
       font-size: 11px;
@@ -256,7 +295,11 @@
       padding-top: 2px;
     }
 
-    .seg-text { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    .seg-text {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
 
     /* Right panel — chat */
     .chat-header {
@@ -268,8 +311,15 @@
       flex-shrink: 0;
     }
 
-    .chat-title { font-size: 14px; font-weight: 600; }
-    .chat-subtitle { font-size: 11px; color: var(--text-muted); }
+    .chat-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .chat-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
 
     .messages-area {
       flex: 1;
@@ -287,8 +337,15 @@
       max-width: 90%;
     }
 
-    .message.user { align-self: flex-end; align-items: flex-end; }
-    .message.assistant { align-self: flex-start; align-items: flex-start; }
+    .message.user {
+      align-self: flex-end;
+      align-items: flex-end;
+    }
+
+    .message.assistant {
+      align-self: flex-start;
+      align-items: flex-start;
+    }
 
     .message-bubble {
       padding: 10px 14px;
@@ -310,11 +367,20 @@
       border-bottom-left-radius: 4px;
     }
 
-    .message-bubble p { margin-bottom: 6px; }
-    .message-bubble p:last-child { margin-bottom: 0; }
-    .message-bubble strong { color: white; }
+    .message-bubble p {
+      margin-bottom: 6px;
+    }
+
+    .message-bubble p:last-child {
+      margin-bottom: 0;
+    }
+
+    .message-bubble strong {
+      color: white;
+    }
+
     .message-bubble code {
-      background: rgba(0,0,0,0.3);
+      background: rgba(0, 0, 0, 0.3);
       padding: 1px 4px;
       border-radius: 3px;
       font-family: monospace;
@@ -376,7 +442,7 @@
 
     .also-in-chip {
       display: inline-block;
-      background: rgba(255,255,255,0.05);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border);
       color: var(--text-secondary);
       padding: 2px 8px;
@@ -389,6 +455,75 @@
     .also-in-chip:hover {
       border-color: var(--accent);
       color: var(--text-primary);
+    }
+
+    /* Supporting videos — shown below answer bubble, not inside it */
+    .supporting-videos {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .supporting-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .supporting-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .supporting-card:hover {
+      border-color: var(--accent);
+      background: var(--bg-elevated);
+    }
+
+    .supporting-card-icon {
+      font-size: 14px;
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+
+    .supporting-card-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .supporting-card-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .supporting-card-snippet {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    .supporting-card-ts {
+      font-size: 10px;
+      color: var(--accent);
+      font-weight: 600;
+      flex-shrink: 0;
+      align-self: center;
     }
 
     /* Input area */
@@ -417,24 +552,42 @@
       font-family: inherit;
     }
 
-    .input-area textarea:focus { border-color: var(--accent); }
-    .input-area textarea::placeholder { color: var(--text-muted); }
+    .input-area textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .input-area textarea::placeholder {
+      color: var(--text-muted);
+    }
 
     .send-btn {
-      width: 42px; height: 42px;
+      width: 42px;
+      height: 42px;
       background: linear-gradient(135deg, var(--accent), #8b5cf6);
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 18px;
       transition: transform 0.2s, opacity 0.2s;
       flex-shrink: 0;
     }
 
-    .send-btn:hover { transform: scale(1.05); }
-    .send-btn:active { transform: scale(0.95); }
-    .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .send-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .send-btn:active {
+      transform: scale(0.95);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
 
     /* Bottom library drawer */
     .library-drawer {
@@ -452,9 +605,15 @@
       user-select: none;
     }
 
-    .drawer-toggle:hover { background: var(--bg-elevated); }
+    .drawer-toggle:hover {
+      background: var(--bg-elevated);
+    }
 
-    .drawer-title { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+    .drawer-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
 
     .drawer-body {
       padding: 12px 16px;
@@ -475,26 +634,49 @@
       transition: all 0.2s;
     }
 
-    .video-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-    .video-card.active { border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
-    .video-card.search-selected { border-color: var(--success); box-shadow: 0 0 10px rgba(67,216,141,0.25); }
-    .video-card.active.search-selected { border-color: var(--success); box-shadow: 0 0 14px rgba(67,216,141,0.35); }
+    .video-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .video-card.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .video-card.search-selected {
+      border-color: var(--success);
+      box-shadow: 0 0 10px rgba(67, 216, 141, 0.25);
+    }
+
+    .video-card.active.search-selected {
+      border-color: var(--success);
+      box-shadow: 0 0 14px rgba(67, 216, 141, 0.35);
+    }
 
     /* search-include checkbox in bottom-left of card */
     .video-card-search-toggle {
       position: absolute;
-      bottom: 6px; right: 6px;
-      width: 18px; height: 18px;
+      bottom: 6px;
+      right: 6px;
+      width: 18px;
+      height: 18px;
       border: 2px solid var(--border);
       border-radius: 4px;
       background: var(--bg-elevated);
       cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 10px;
       z-index: 10;
       transition: border-color 0.15s, background 0.15s;
     }
-    .video-card-search-toggle:hover { border-color: var(--success); }
+
+    .video-card-search-toggle:hover {
+      border-color: var(--success);
+    }
+
     .video-card-search-toggle.checked {
       border-color: var(--success);
       background: var(--success);
@@ -503,8 +685,10 @@
 
     .video-card-delete {
       position: absolute;
-      top: 5px; right: 5px;
-      width: 20px; height: 20px;
+      top: 5px;
+      right: 5px;
+      width: 20px;
+      height: 20px;
       background: rgba(255, 101, 132, 0.85);
       border: none;
       border-radius: 50%;
@@ -520,10 +704,18 @@
       transition: background 0.15s, transform 0.15s;
     }
 
-    .video-card:hover .video-card-delete { display: flex; }
-    .video-card-delete:hover { background: var(--error); transform: scale(1.1); }
+    .video-card:hover .video-card-delete {
+      display: flex;
+    }
 
-    .video-card { position: relative; }
+    .video-card-delete:hover {
+      background: var(--error);
+      transform: scale(1.1);
+    }
+
+    .video-card {
+      position: relative;
+    }
 
     .video-card-thumb {
       height: 90px;
@@ -536,9 +728,15 @@
       overflow: hidden;
     }
 
-    .video-card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .video-card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-    .video-card-info { padding: 8px; }
+    .video-card-info {
+      padding: 8px;
+    }
 
     .video-card-title {
       font-size: 11px;
@@ -557,15 +755,28 @@
     }
 
     .status-dot {
-      width: 6px; height: 6px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       flex-shrink: 0;
     }
 
-    .status-ready { background: var(--success); }
-    .status-processing { background: var(--warning); animation: pulse 1.5s infinite; }
-    .status-pending { background: var(--text-muted); }
-    .status-failed { background: var(--error); }
+    .status-ready {
+      background: var(--success);
+    }
+
+    .status-processing {
+      background: var(--warning);
+      animation: pulse 1.5s infinite;
+    }
+
+    .status-pending {
+      background: var(--text-muted);
+    }
+
+    .status-failed {
+      background: var(--error);
+    }
 
     .transcript-badge {
       font-size: 9px;
@@ -577,8 +788,15 @@
       letter-spacing: 0.4px;
     }
 
-    .badge-has { background: rgba(67, 216, 141, 0.2); color: var(--success); }
-    .badge-none { background: rgba(96, 96, 122, 0.2); color: var(--text-muted); }
+    .badge-has {
+      background: rgba(67, 216, 141, 0.2);
+      color: var(--success);
+    }
+
+    .badge-none {
+      background: rgba(96, 96, 122, 0.2);
+      color: var(--text-muted);
+    }
 
     /* Upload card */
     .upload-card {
@@ -597,9 +815,19 @@
       gap: 6px;
     }
 
-    .upload-card:hover { border-color: var(--accent); color: var(--accent); }
-    .upload-card .icon { font-size: 28px; }
-    .upload-card .label { font-size: 11px; color: var(--text-muted); }
+    .upload-card:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .upload-card .icon {
+      font-size: 28px;
+    }
+
+    .upload-card .label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
 
     /* Multi-file queue */
     .file-queue {
@@ -645,7 +873,9 @@
       flex-shrink: 0;
     }
 
-    .file-queue-item .file-remove:hover { color: var(--error); }
+    .file-queue-item .file-remove:hover {
+      color: var(--error);
+    }
 
     .file-progress {
       height: 3px;
@@ -667,7 +897,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.75);
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(4px);
       z-index: 200;
       display: flex;
@@ -684,8 +914,17 @@
       max-width: 95vw;
     }
 
-    .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
-    .modal-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .modal-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
 
     .drop-zone {
       border: 2px dashed var(--border);
@@ -697,12 +936,30 @@
       margin-bottom: 16px;
     }
 
-    .drop-zone.drag-over { border-color: var(--accent); background: var(--accent-glow); }
-    .drop-zone .drop-icon { font-size: 36px; margin-bottom: 8px; }
-    .drop-zone .drop-text { font-size: 13px; color: var(--text-muted); }
-    .drop-zone .drop-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+    .drop-zone.drag-over {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
 
-    .form-group { margin-bottom: 14px; }
+    .drop-zone .drop-icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .drop-zone .drop-text {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .drop-zone .drop-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
 
     .form-label {
       display: block;
@@ -725,8 +982,13 @@
       font-family: inherit;
     }
 
-    .form-input:focus { border-color: var(--accent); }
-    .form-input::placeholder { color: var(--text-muted); }
+    .form-input:focus {
+      border-color: var(--accent);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-muted);
+    }
 
     .modal-actions {
       display: flex;
@@ -751,15 +1013,23 @@
       color: var(--text-secondary);
     }
 
-    .btn-ghost:hover { background: var(--bg-elevated); }
+    .btn-ghost:hover {
+      background: var(--bg-elevated);
+    }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), #8b5cf6);
       color: white;
     }
 
-    .btn-primary:hover { filter: brightness(1.1); }
-    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary:hover {
+      filter: brightness(1.1);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
 
     /* Progress bar in modal */
     .upload-progress {
@@ -788,7 +1058,7 @@
     .processing-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0, 0, 0, 0.8);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -797,14 +1067,18 @@
     }
 
     .processing-overlay .spinner {
-      width: 40px; height: 40px;
+      width: 40px;
+      height: 40px;
       border: 3px solid var(--border);
       border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
 
-    .processing-text { font-size: 13px; color: var(--text-secondary); }
+    .processing-text {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
 
     .processing-progress-bar {
       width: 200px;
@@ -823,39 +1097,89 @@
 
     /* Timeline glow pulse animation */
     @keyframes timelineGlow {
-      0% { box-shadow: 0 0 0 0 var(--accent-glow); }
-      50% { box-shadow: 0 0 20px 6px var(--accent-glow); }
-      100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+      0% {
+        box-shadow: 0 0 0 0 var(--accent-glow);
+      }
+
+      50% {
+        box-shadow: 0 0 20px 6px var(--accent-glow);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 var(--accent-glow);
+      }
     }
 
-    .timeline-glow { animation: timelineGlow 0.8s ease; }
+    .timeline-glow {
+      animation: timelineGlow 0.8s ease;
+    }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
+    }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .fade-in { animation: fadeIn 0.3s ease; }
+    .fade-in {
+      animation: fadeIn 0.3s ease;
+    }
 
     /* Loading dots */
     .loading-dots span {
       display: inline-block;
-      width: 6px; height: 6px;
+      width: 6px;
+      height: 6px;
       background: var(--text-muted);
       border-radius: 50%;
       margin: 0 2px;
       animation: bounce 1.2s infinite;
     }
 
-    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+    .loading-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .loading-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
 
     @keyframes bounce {
-      0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
-      40% { transform: scale(1.2); opacity: 1; }
+
+      0%,
+      80%,
+      100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+      }
+
+      40% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
     }
 
     /* Empty state */
@@ -871,9 +1195,21 @@
       text-align: center;
     }
 
-    .empty-state .icon { font-size: 36px; opacity: 0.4; margin-bottom: 4px; }
-    .empty-state .title { font-size: 14px; font-weight: 600; color: var(--text-secondary); }
-    .empty-state .subtitle { font-size: 12px; }
+    .empty-state .icon {
+      font-size: 36px;
+      opacity: 0.4;
+      margin-bottom: 4px;
+    }
+
+    .empty-state .title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .empty-state .subtitle {
+      font-size: 12px;
+    }
 
     /* Discovery results */
     .discovery-results {
@@ -905,12 +1241,12 @@
 
     .discovery-card:hover {
       border-color: var(--accent);
-      background: rgba(108,99,255,0.08);
+      background: rgba(108, 99, 255, 0.08);
     }
 
     .discovery-card.selected {
       border-color: var(--success);
-      background: rgba(67,216,141,0.08);
+      background: rgba(67, 216, 141, 0.08);
     }
 
     .discovery-rank {
@@ -921,7 +1257,10 @@
       margin-top: 2px;
     }
 
-    .discovery-info { flex: 1; min-width: 0; }
+    .discovery-info {
+      flex: 1;
+      min-width: 0;
+    }
 
     .discovery-title {
       font-size: 13px;
@@ -945,7 +1284,7 @@
       font-weight: 600;
       padding: 2px 7px;
       border-radius: 10px;
-      background: rgba(108,99,255,0.15);
+      background: rgba(108, 99, 255, 0.15);
       color: var(--accent);
     }
 
@@ -983,439 +1322,463 @@
 
     /* Transcript source badge — extended for new states */
     .badge-no-audio {
-      background: rgba(255,101,132,0.15);
+      background: rgba(255, 101, 132, 0.15);
       color: var(--error);
-      border: 1px solid rgba(255,101,132,0.3);
+      border: 1px solid rgba(255, 101, 132, 0.3);
     }
 
     .badge-no-speech {
-      background: rgba(255,209,102,0.15);
+      background: rgba(255, 209, 102, 0.15);
       color: var(--warning);
-      border: 1px solid rgba(255,209,102,0.3);
+      border: 1px solid rgba(255, 209, 102, 0.3);
     }
 
     .badge-whisper {
-      background: rgba(108,99,255,0.18);
+      background: rgba(108, 99, 255, 0.18);
       color: var(--accent);
-      border: 1px solid rgba(108,99,255,0.3);
+      border: 1px solid rgba(108, 99, 255, 0.3);
     }
 
     .badge-embed {
-      background: rgba(6,182,212,0.15);
+      background: rgba(6, 182, 212, 0.15);
       color: #06b6d4;
-      border: 1px solid rgba(6,182,212,0.3);
+      border: 1px solid rgba(6, 182, 212, 0.3);
     }
   </style>
 </head>
+
 <body>
 
-<!-- Header -->
-<header>
-  <div class="logo">
-    <div class="logo-icon">🎬</div>
-    <span class="logo-text">VideoRAG</span>
-    <span class="logo-badge">V2</span>
-  </div>
-  <div style="display:flex;gap:8px;align-items:center;">
-    <span id="headerStatus" style="font-size:12px;color:var(--text-muted);">No video selected</span>
-  </div>
-</header>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🎬</div>
+      <span class="logo-text">VideoRAG</span>
+      <span class="logo-badge">V2</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <span id="headerStatus" style="font-size:12px;color:var(--text-muted);">No video selected</span>
+    </div>
+  </header>
 
-<!-- Main body -->
-<div class="app-body">
+  <!-- Main body -->
+  <div class="app-body">
 
-  <!-- Left panel -->
-  <div class="left-panel">
+    <!-- Left panel -->
+    <div class="left-panel">
 
-    <!-- Video player -->
-    <div class="video-container" id="videoContainer">
-      <div class="no-video-placeholder" id="noVideoPlaceholder">
-        <div class="icon">🎬</div>
-        <div style="font-size:15px;font-weight:600;color:var(--text-secondary);">No video selected</div>
-        <div style="font-size:12px;">Upload a video or select one from the library below</div>
-      </div>
-      <video id="mainVideo" style="display:none;" controls preload="metadata"></video>
-      <div class="processing-overlay" id="processingOverlay" style="display:none;">
-        <div class="spinner"></div>
-        <div class="processing-text" id="processingText">Processing…</div>
-        <div class="processing-progress-bar">
-          <div class="processing-progress-fill" id="processingFill" style="width:0%"></div>
+      <!-- Video player -->
+      <div class="video-container" id="videoContainer">
+        <div class="no-video-placeholder" id="noVideoPlaceholder">
+          <div class="icon">🎬</div>
+          <div style="font-size:15px;font-weight:600;color:var(--text-secondary);">No video selected</div>
+          <div style="font-size:12px;">Upload a video or select one from the library below</div>
+        </div>
+        <video id="mainVideo" style="display:none;" controls preload="metadata"></video>
+        <div class="processing-overlay" id="processingOverlay" style="display:none;">
+          <div class="spinner"></div>
+          <div class="processing-text" id="processingText">Processing…</div>
+          <div class="processing-progress-bar">
+            <div class="processing-progress-fill" id="processingFill" style="width:0%"></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Timeline -->
-    <div class="timeline-container">
-      <div class="timeline-bar" id="timelineBar" onclick="seekFromTimeline(event)">
-        <div class="timeline-progress" id="timelineProgress" style="width:0%"></div>
-        <!-- Topic markers injected here -->
-      </div>
-      <div class="timeline-time">
-        <span id="currentTime">0:00</span>
-        <span id="totalTime">0:00</span>
-      </div>
-    </div>
-
-    <!-- Transcript panel -->
-    <div class="transcript-panel" id="transcriptPanel">
-      <div class="transcript-header">
-        <div style="font-size:13px;font-weight:600;">Transcript</div>
-        <span id="transcriptSourceBadge" class="transcript-source-badge badge-gray">None</span>
-      </div>
-      <div id="transcriptContent">
-        <div class="empty-state" style="padding:16px;">
-          <div class="icon" style="font-size:24px;">📄</div>
-          <div class="subtitle">Transcript will appear here after processing</div>
+      <!-- Timeline -->
+      <div class="timeline-container">
+        <div class="timeline-bar" id="timelineBar" onclick="seekFromTimeline(event)">
+          <div class="timeline-progress" id="timelineProgress" style="width:0%"></div>
+          <!-- Topic markers injected here -->
+        </div>
+        <div class="timeline-time">
+          <span id="currentTime">0:00</span>
+          <span id="totalTime">0:00</span>
         </div>
       </div>
+
+      <!-- Transcript panel -->
+      <div class="transcript-panel" id="transcriptPanel">
+        <div class="transcript-header">
+          <div style="font-size:13px;font-weight:600;">Transcript</div>
+          <span id="transcriptSourceBadge" class="transcript-source-badge badge-gray">None</span>
+        </div>
+        <div id="transcriptContent">
+          <div class="empty-state" style="padding:16px;">
+            <div class="icon" style="font-size:24px;">📄</div>
+            <div class="subtitle">Transcript will appear here after processing</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
+    <!-- Right panel — chat -->
+    <div class="right-panel">
+
+      <div class="chat-header">
+        <div>
+          <div class="chat-title">Ask about this video</div>
+          <div class="chat-subtitle" id="chatSubtitle">Select a processed video to start</div>
+        </div>
+      </div>
+
+      <div class="messages-area" id="messagesArea">
+        <div class="empty-state">
+          <div class="icon">💬</div>
+          <div class="title">Video Q&A</div>
+          <div class="subtitle">Ask anything about the video content — topics, key moments, specific information</div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <textarea id="questionInput" placeholder="Ask a question about the video…" rows="1" disabled
+          onkeydown="handleInputKey(event)" oninput="autoResize(this)"></textarea>
+        <button class="send-btn" id="sendBtn" disabled onclick="sendQuestion()">➤</button>
+      </div>
+
+    </div>
   </div>
 
-  <!-- Right panel — chat -->
-  <div class="right-panel">
+  <!-- Bottom library drawer -->
+  <div class="library-drawer">
+    <div class="drawer-toggle" onclick="toggleDrawer()">
+      <span class="drawer-title" id="drawerTitle">▲ VIDEO LIBRARY</span>
+      <span style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:8px;">
+        <span id="searchScopeLabel" style="color:var(--success);display:none;"></span>
+        <span id="videoCount">0 videos</span>
+      </span>
+    </div>
+    <div class="drawer-body" id="drawerBody" style="display:flex;">
+      <div class="upload-card" onclick="openUploadModal()">
+        <div class="icon">+</div>
+        <div class="label">Upload Video</div>
+      </div>
+      <!-- Video cards injected here -->
+    </div>
+  </div>
 
-    <div class="chat-header">
-      <div>
-        <div class="chat-title">Ask about this video</div>
-        <div class="chat-subtitle" id="chatSubtitle">Select a processed video to start</div>
+  <!-- Upload Modal -->
+  <div class="modal-overlay" id="uploadModal" style="display:none;" onclick="closeUploadModal(event)">
+    <div class="modal" onclick="event.stopPropagation()" style="width:520px;">
+      <div class="modal-title">Upload Videos</div>
+      <div class="modal-subtitle">Drop one or more video files to process with AI analysis</div>
+
+      <div class="drop-zone" id="dropZone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)"
+        ondragleave="handleDragLeave(event)" onclick="document.getElementById('fileInput').click()">
+        <div class="drop-icon" id="dropIcon">📁</div>
+        <div class="drop-text" id="dropText">Drop videos here or click to browse</div>
+        <div class="drop-sub" id="dropSub">MP4, MKV, MOV, AVI, WebM — multiple files supported</div>
+      </div>
+      <input type="file" id="fileInput" accept="video/*" multiple style="display:none;"
+        onchange="handleFileSelect(event)" />
+
+      <div class="file-queue" id="fileQueue" style="display:none;"></div>
+
+      <div class="form-group">
+        <label class="form-label">Glossary Names (optional)</label>
+        <input class="form-input" id="glossaryNames" placeholder="e.g. OpenAI, Kubernetes, React" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Domain Terms (optional)</label>
+        <input class="form-input" id="glossaryTerms" placeholder="e.g. RAG, transformer, embedding" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Domain Context (optional)</label>
+        <input class="form-input" id="domainContext" placeholder="e.g. Machine learning tutorial" />
+      </div>
+
+      <div id="uploadStatusLabel"
+        style="display:none;font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;"></div>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelUploadBtn" onclick="closeUploadModal()">Cancel</button>
+        <button class="btn btn-primary" id="uploadBtn" onclick="startUpload()" disabled>Upload All</button>
       </div>
     </div>
-
-    <div class="messages-area" id="messagesArea">
-      <div class="empty-state">
-        <div class="icon">💬</div>
-        <div class="title">Video Q&A</div>
-        <div class="subtitle">Ask anything about the video content — topics, key moments, specific information</div>
-      </div>
-    </div>
-
-    <div class="input-area">
-      <textarea
-        id="questionInput"
-        placeholder="Ask a question about the video…"
-        rows="1"
-        disabled
-        onkeydown="handleInputKey(event)"
-        oninput="autoResize(this)"
-      ></textarea>
-      <button class="send-btn" id="sendBtn" disabled onclick="sendQuestion()">➤</button>
-    </div>
-
   </div>
-</div>
 
-<!-- Bottom library drawer -->
-<div class="library-drawer">
-  <div class="drawer-toggle" onclick="toggleDrawer()">
-    <span class="drawer-title" id="drawerTitle">▲ VIDEO LIBRARY</span>
-    <span style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:8px;">
-      <span id="searchScopeLabel" style="color:var(--success);display:none;"></span>
-      <span id="videoCount">0 videos</span>
-    </span>
-  </div>
-  <div class="drawer-body" id="drawerBody" style="display:flex;">
-    <div class="upload-card" onclick="openUploadModal()">
-      <div class="icon">+</div>
-      <div class="label">Upload Video</div>
-    </div>
-    <!-- Video cards injected here -->
-  </div>
-</div>
+  <script>
+    // ═══════════════════════════════════════════════════════════════════
+    // State
+    // ═══════════════════════════════════════════════════════════════════
 
-<!-- Upload Modal -->
-<div class="modal-overlay" id="uploadModal" style="display:none;" onclick="closeUploadModal(event)">
-  <div class="modal" onclick="event.stopPropagation()" style="width:520px;">
-    <div class="modal-title">Upload Videos</div>
-    <div class="modal-subtitle">Drop one or more video files to process with AI analysis</div>
+    const API = '';
+    let state = {
+      videos: [],
+      activeVideoId: null,
+      activeVideo: null,
+      transcriptSegments: [],
+      transcriptSource: 'None',
+      topics: [],
+      processingWs: null,
+      drawerOpen: true,
+      pendingFiles: [],
+      selectedVideoIds: new Set(),
+      _videoFingerprint: '',       // for detecting real changes in loadVideos
+    };
 
-    <div
-      class="drop-zone"
-      id="dropZone"
-      ondrop="handleDrop(event)"
-      ondragover="handleDragOver(event)"
-      ondragleave="handleDragLeave(event)"
-      onclick="document.getElementById('fileInput').click()"
-    >
-      <div class="drop-icon" id="dropIcon">📁</div>
-      <div class="drop-text" id="dropText">Drop videos here or click to browse</div>
-      <div class="drop-sub" id="dropSub">MP4, MKV, MOV, AVI, WebM — multiple files supported</div>
-    </div>
-    <input type="file" id="fileInput" accept="video/*" multiple style="display:none;" onchange="handleFileSelect(event)" />
+    // ═══════════════════════════════════════════════════════════════════
+    // Init
+    // ═══════════════════════════════════════════════════════════════════
 
-    <div class="file-queue" id="fileQueue" style="display:none;"></div>
+    document.addEventListener('DOMContentLoaded', () => {
+      loadVideos();
+      setInterval(loadVideos, 10000);
 
-    <div class="form-group">
-      <label class="form-label">Glossary Names (optional)</label>
-      <input class="form-input" id="glossaryNames" placeholder="e.g. OpenAI, Kubernetes, React" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Domain Terms (optional)</label>
-      <input class="form-input" id="glossaryTerms" placeholder="e.g. RAG, transformer, embedding" />
-    </div>
-    <div class="form-group">
-      <label class="form-label">Domain Context (optional)</label>
-      <input class="form-input" id="domainContext" placeholder="e.g. Machine learning tutorial" />
-    </div>
+      const video = document.getElementById('mainVideo');
+      video.addEventListener('timeupdate', onVideoTimeUpdate);
+      video.addEventListener('loadedmetadata', onVideoLoaded);
+      video.addEventListener('error', onVideoError);
+      // When .webm duration resolves later, update the duration display
+      video.addEventListener('durationchange', () => {
+        if (isFinite(video.duration) && video.duration > 0) {
+          document.getElementById('totalTime').textContent = fmtTime(video.duration);
+          renderTopicMarkers();
+        }
+      });
 
-    <div id="uploadStatusLabel" style="display:none;font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;"></div>
-
-    <div class="modal-actions">
-      <button class="btn btn-ghost" id="cancelUploadBtn" onclick="closeUploadModal()">Cancel</button>
-      <button class="btn btn-primary" id="uploadBtn" onclick="startUpload()" disabled>Upload All</button>
-    </div>
-  </div>
-</div>
-
-<script>
-// ═══════════════════════════════════════════════════════════════════
-// State
-// ═══════════════════════════════════════════════════════════════════
-
-const API = '';
-let state = {
-  videos: [],
-  activeVideoId: null,
-  activeVideo: null,
-  transcriptSegments: [],
-  transcriptSource: 'None',   // TranscriptSource value for active video
-  topics: [],
-  processingWs: null,
-  drawerOpen: true,
-  pendingFiles: [],         // array of File objects for multi-upload
-  selectedVideoIds: new Set(),  // video IDs included in search scope
-};
-
-// ═══════════════════════════════════════════════════════════════════
-// Init
-// ═══════════════════════════════════════════════════════════════════
-
-document.addEventListener('DOMContentLoaded', () => {
-  loadVideos();
-  setInterval(loadVideos, 10000);
-
-  const video = document.getElementById('mainVideo');
-  video.addEventListener('timeupdate', onVideoTimeUpdate);
-  video.addEventListener('loadedmetadata', onVideoLoaded);
-  video.addEventListener('error', onVideoError);
-
-  // Single delegated listener for all video card clicks — avoids inline handler bugs
-  document.getElementById('drawerBody').addEventListener('click', (e) => {
-    // Delete button
-    const del = e.target.closest('.video-card-delete');
-    if (del) {
-      e.stopPropagation();
-      const card = del.closest('[data-video-id]');
-      if (card) deleteVideo(card.dataset.videoId);
-      return;
-    }
-    // Search-toggle button
-    const tog = e.target.closest('.video-card-search-toggle');
-    if (tog) {
-      e.stopPropagation();
-      const card = tog.closest('[data-video-id]');
-      if (card) toggleSearchVideo(card.dataset.videoId);
-      return;
-    }
-    // Card body → select video
-    const card = e.target.closest('.video-card[data-video-id]');
-    if (card) selectVideo(card.dataset.videoId);
-  });
-});
-
-// ═══════════════════════════════════════════════════════════════════
-// Videos
-// ═══════════════════════════════════════════════════════════════════
-
-async function loadVideos() {
-  try {
-    const resp = await fetch(`${API}/api/videos`);
-    if (!resp.ok) return;
-    const videos = await resp.json();
-    state.videos = videos;
-
-    // Auto-add ALL ready videos to search scope
-    videos.filter(v => v.status === 'ready').forEach(v => state.selectedVideoIds.add(v.id));
-    // Remove any IDs that no longer exist
-    state.selectedVideoIds.forEach(id => {
-      if (!videos.find(v => v.id === id)) state.selectedVideoIds.delete(id);
+      // Single delegated listener for all video card clicks — avoids inline handler bugs
+      document.getElementById('drawerBody').addEventListener('click', (e) => {
+        // Delete button
+        const del = e.target.closest('.video-card-delete');
+        if (del) {
+          e.stopPropagation();
+          const card = del.closest('[data-video-id]');
+          if (card) deleteVideo(card.dataset.videoId);
+          return;
+        }
+        // Search-toggle button
+        const tog = e.target.closest('.video-card-search-toggle');
+        if (tog) {
+          e.stopPropagation();
+          const card = tog.closest('[data-video-id]');
+          if (card) toggleSearchVideo(card.dataset.videoId);
+          return;
+        }
+        // Card body → select video
+        const card = e.target.closest('.video-card[data-video-id]');
+        if (card) selectVideo(card.dataset.videoId);
+      });
     });
 
-    renderLibrary();
-    refreshChatState();
+    // ═══════════════════════════════════════════════════════════════════
+    // Videos
+    // ═══════════════════════════════════════════════════════════════════
 
-    // Handle active video status changes
-    if (state.activeVideoId) {
-      const updated = videos.find(v => v.id === state.activeVideoId);
-      if (updated && updated.status !== state.activeVideo?.status) {
-        state.activeVideo = updated;
-        if (updated.status === 'ready') {
-          hideProcessingOverlay();
-          loadTranscript(state.activeVideoId);
-          loadTopics(state.activeVideoId);
-        } else if (updated.status === 'failed') {
-          hideProcessingOverlay();
-          showError('Processing failed. Please try again.');
+    async function loadVideos() {
+      try {
+        const resp = await fetch(`${API}/api/videos`);
+        if (!resp.ok) return;
+        const videos = await resp.json();
+        state.videos = videos;
+
+        // Auto-add ALL ready videos to search scope
+        videos.filter(v => v.status === 'ready').forEach(v => state.selectedVideoIds.add(v.id));
+        // Remove any IDs that no longer exist
+        state.selectedVideoIds.forEach(id => {
+          if (!videos.find(v => v.id === id)) state.selectedVideoIds.delete(id);
+        });
+
+        // Only rebuild the library DOM when the list actually changed (id/status/source).
+        // This prevents the card toggle from flickering every 10s poll tick.
+        const fingerprint = videos.map(v => `${v.id}:${v.status}:${v.transcript_source}`).join('|');
+        if (fingerprint !== state._videoFingerprint) {
+          state._videoFingerprint = fingerprint;
+          renderLibrary();
         }
+        refreshChatState();
+
+        // Handle active video status changes
+        if (state.activeVideoId) {
+          const updated = videos.find(v => v.id === state.activeVideoId);
+          if (updated && updated.status !== state.activeVideo?.status) {
+            state.activeVideo = updated;
+            if (updated.status === 'ready') {
+              hideProcessingOverlay();
+              loadTranscript(state.activeVideoId);
+              loadTopics(state.activeVideoId);
+            } else if (updated.status === 'failed') {
+              hideProcessingOverlay();
+              showError('Processing failed. Please try again.');
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Failed to load videos:', e);
       }
     }
-  } catch (e) {
-    console.error('Failed to load videos:', e);
-  }
-}
 
-async function selectVideo(videoId) {
-  const video = state.videos.find(v => v.id === videoId);
-  if (!video) return;
+    async function selectVideo(videoId, seekTime = null) {
+      const video = state.videos.find(v => v.id === videoId);
+      if (!video) return;
 
-  state.activeVideoId = videoId;
-  state.activeVideo = video;
+      state.activeVideoId = videoId;
+      state.activeVideo = video;
 
-  // Update card active states in-place — no full library rebuild
-  document.querySelectorAll('.video-card').forEach(c => c.classList.remove('active'));
-  document.querySelector(`[data-video-id="${videoId}"]`)?.classList.add('active');
+      // Update card active states in-place
+      document.querySelectorAll('.video-card').forEach(c => c.classList.remove('active'));
+      document.querySelector(`[data-video-id="${videoId}"]`)?.classList.add('active');
 
-  document.getElementById('headerStatus').textContent = video.filename;
+      document.getElementById('headerStatus').textContent = video.filename;
 
-  const mainVideo = document.getElementById('mainVideo');
-  const placeholder = document.getElementById('noVideoPlaceholder');
+      const mainVideo = document.getElementById('mainVideo');
+      const placeholder = document.getElementById('noVideoPlaceholder');
 
-  mainVideo.pause();
-  mainVideo.src = '';
-  mainVideo.load();
-  mainVideo.src = `${API}/api/videos/${videoId}/stream`;
-  mainVideo.style.display = 'block';
-  placeholder.style.display = 'none';
-  mainVideo.load();
+      mainVideo.pause();
 
-  if (video.status === 'processing' || video.status === 'pending') {
-    showProcessingOverlay('Processing video…', 0);
-    connectProgressWS(videoId);
-  } else if (video.status === 'ready') {
-    hideProcessingOverlay();
-    loadTranscript(videoId);
-    loadTopics(videoId);
-    // Auto-add to search scope (doesn't require re-rendering the whole library)
-    if (!state.selectedVideoIds.has(videoId)) {
-      state.selectedVideoIds.add(videoId);
-      _updateCardSearchToggle(videoId, true);
+      const expectedSrc = `${API}/api/videos/${videoId}/stream`;
+      const expectedSrcWithTime = seekTime != null ? `${expectedSrc}#t=${seekTime}` : expectedSrc;
+
+      // Check if it's the exact same base stream
+      if (mainVideo.src && mainVideo.src.split('#')[0].endsWith(`/api/videos/${videoId}/stream`)) {
+        // Already loaded, but we must update the URL fragment to force Chrome to seek safely
+        if (seekTime != null) {
+          mainVideo.src = expectedSrcWithTime;
+          mainVideo.play().catch(() => { });
+        } else {
+          mainVideo.play().catch(() => { });
+        }
+      } else {
+        // Load new source (with media fragment resolving seek natively)
+        mainVideo.src = expectedSrcWithTime;
+        mainVideo.load();
+        // If we provided a seek time, we intend to play it immediately
+        if (seekTime != null) {
+          mainVideo.play().catch(() => { });
+        }
+      }
+
+      mainVideo.style.display = 'block';
+      placeholder.style.display = 'none';
+
+      if (video.status === 'processing' || video.status === 'pending') {
+        showProcessingOverlay('Processing video…', 0);
+        connectProgressWS(videoId);
+      } else if (video.status === 'ready') {
+        hideProcessingOverlay();
+        loadTranscript(videoId);
+        loadTopics(videoId);
+        // Auto-add to search scope
+        if (!state.selectedVideoIds.has(videoId)) {
+          state.selectedVideoIds.add(videoId);
+          _updateCardSearchToggle(videoId, true);
+        }
+        refreshChatState();
+      } else if (video.status === 'failed') {
+        hideProcessingOverlay();
+      }
     }
-    refreshChatState();
-  } else if (video.status === 'failed') {
-    hideProcessingOverlay();
-  }
-}
 
-function onVideoError() {
-  const video = document.getElementById('mainVideo');
-  const err = video.error;
-  if (err) {
-    console.error('Video error:', err.code, err.message);
-  }
-}
-
-function toggleSearchVideo(videoId) {
-  const video = state.videos.find(v => v.id === videoId);
-  if (!video || video.status !== 'ready') return;
-
-  const nowSelected = !state.selectedVideoIds.has(videoId);
-  if (nowSelected) {
-    state.selectedVideoIds.add(videoId);
-  } else {
-    state.selectedVideoIds.delete(videoId);
-  }
-  _updateCardSearchToggle(videoId, nowSelected);
-  refreshChatState();
-}
-
-// Update a single card's toggle button without full library rebuild
-function _updateCardSearchToggle(videoId, isSelected) {
-  const card = document.querySelector(`[data-video-id="${videoId}"]`);
-  if (!card) return;
-  if (isSelected) {
-    card.classList.add('search-selected');
-  } else {
-    card.classList.remove('search-selected');
-  }
-  const btn = card.querySelector('.video-card-search-toggle');
-  if (!btn) return;
-  btn.textContent = isSelected ? '✓' : '+';
-  btn.classList.toggle('checked', isSelected);
-  btn.title = isSelected ? 'Remove from search' : 'Add to search';
-}
-
-// Central function: update subtitle + enable/disable chat based on search scope
-function refreshChatState() {
-  const n = state.selectedVideoIds.size;
-  const subtitle = document.getElementById('chatSubtitle');
-  const scopeLabel = document.getElementById('searchScopeLabel');
-
-  // Update drawer scope badge
-  if (scopeLabel) {
-    if (n > 1) {
-      scopeLabel.textContent = `Searching ${n} videos`;
-      scopeLabel.style.display = 'inline';
-    } else {
-      scopeLabel.style.display = 'none';
+    function onVideoError() {
+      const video = document.getElementById('mainVideo');
+      const err = video.error;
+      if (err) {
+        console.error('Video error:', err.code, err.message);
+      }
     }
-  }
 
-  if (!subtitle) return;
+    function toggleSearchVideo(videoId) {
+      const video = state.videos.find(v => v.id === videoId);
+      if (!video || video.status !== 'ready') return;
 
-  if (n === 0) {
-    subtitle.textContent = 'Select a ready video to search';
-    document.getElementById('questionInput').disabled = true;
-    document.getElementById('sendBtn').disabled = true;
-  } else if (n === 1) {
-    const vid = [...state.selectedVideoIds][0];
-    const v = state.videos.find(x => x.id === vid);
-    subtitle.textContent = v ? `Searching: ${v.filename}` : 'Ready • Ask a question';
-    document.getElementById('questionInput').disabled = false;
-    document.getElementById('sendBtn').disabled = false;
-  } else {
-    subtitle.textContent = `Searching ${n} videos`;
-    document.getElementById('questionInput').disabled = false;
-    document.getElementById('sendBtn').disabled = false;
-  }
-}
+      const nowSelected = !state.selectedVideoIds.has(videoId);
+      if (nowSelected) {
+        state.selectedVideoIds.add(videoId);
+      } else {
+        state.selectedVideoIds.delete(videoId);
+      }
+      _updateCardSearchToggle(videoId, nowSelected);
+      refreshChatState();
+    }
 
-// ═══════════════════════════════════════════════════════════════════
-// Library rendering
-// ═══════════════════════════════════════════════════════════════════
+    // Update a single card's toggle button without full library rebuild
+    function _updateCardSearchToggle(videoId, isSelected) {
+      const card = document.querySelector(`[data-video-id="${videoId}"]`);
+      if (!card) return;
+      if (isSelected) {
+        card.classList.add('search-selected');
+      } else {
+        card.classList.remove('search-selected');
+      }
+      const btn = card.querySelector('.video-card-search-toggle');
+      if (!btn) return;
+      btn.textContent = isSelected ? '✓' : '+';
+      btn.classList.toggle('checked', isSelected);
+      btn.title = isSelected ? 'Remove from search' : 'Add to search';
+    }
 
-function renderLibrary() {
-  const body = document.getElementById('drawerBody');
-  document.getElementById('videoCount').textContent =
-    `${state.videos.length} video${state.videos.length !== 1 ? 's' : ''}`;
+    // Central function: update subtitle + enable/disable chat based on search scope
+    function refreshChatState() {
+      const n = state.selectedVideoIds.size;
+      const subtitle = document.getElementById('chatSubtitle');
+      const scopeLabel = document.getElementById('searchScopeLabel');
 
-  // Save upload card before clearing
-  const uploadCard = body.querySelector('.upload-card');
-  body.innerHTML = '';
-  body.appendChild(uploadCard);
+      // Update drawer scope badge
+      if (scopeLabel) {
+        if (n > 1) {
+          scopeLabel.textContent = `Searching ${n} videos`;
+          scopeLabel.style.display = 'inline';
+        } else {
+          scopeLabel.style.display = 'none';
+        }
+      }
 
-  state.videos.forEach(video => {
-    const isActive = state.activeVideoId === video.id;
-    const isSearched = state.selectedVideoIds.has(video.id);
-    const canSearch = video.status === 'ready';
-    const src = video.transcript_source || 'None';
-    const hasTranscript = src !== 'None' && src !== 'No Audio' && src !== 'No Speech Detected';
-    const statusLabel = { ready: 'Ready', processing: 'Processing', pending: 'Pending', failed: 'Failed' }[video.status] || video.status;
+      if (!subtitle) return;
 
-    let tBadgeLabel = 'NONE';
-    let tBadgeClass = 'badge-none';
-    if (src === 'No Audio')                   { tBadgeLabel = 'NO AUDIO';  tBadgeClass = 'badge-no-audio'; }
-    else if (src === 'No Speech Detected')    { tBadgeLabel = 'NO SPEECH'; tBadgeClass = 'badge-no-speech'; }
-    else if (src === 'Whisper Transcription') { tBadgeLabel = 'WHISPER';   tBadgeClass = 'badge-whisper'; }
-    else if (src === 'Embedded Subtitles')    { tBadgeLabel = 'EMBEDDED';  tBadgeClass = 'badge-embed'; }
-    else if (src === 'Sidecar SRT/VTT')       { tBadgeLabel = 'SRT/VTT';   tBadgeClass = 'badge-embed'; }
-    else if (hasTranscript)                   { tBadgeLabel = 'TRANSCRIPT'; tBadgeClass = 'badge-has'; }
+      if (n === 0) {
+        subtitle.textContent = 'Select a ready video to search';
+        document.getElementById('questionInput').disabled = true;
+        document.getElementById('sendBtn').disabled = true;
+      } else if (n === 1) {
+        const vid = [...state.selectedVideoIds][0];
+        const v = state.videos.find(x => x.id === vid);
+        subtitle.textContent = v ? `Searching: ${v.filename}` : 'Ready • Ask a question';
+        document.getElementById('questionInput').disabled = false;
+        document.getElementById('sendBtn').disabled = false;
+      } else {
+        subtitle.textContent = `Searching ${n} videos`;
+        document.getElementById('questionInput').disabled = false;
+        document.getElementById('sendBtn').disabled = false;
+      }
+    }
 
-    const card = document.createElement('div');
-    card.className = `video-card${isActive ? ' active' : ''}${isSearched ? ' search-selected' : ''}`;
-    card.id = `card-${video.id}`;
-    card.dataset.videoId = video.id;  // used by delegation listener
+    // ═══════════════════════════════════════════════════════════════════
+    // Library rendering
+    // ═══════════════════════════════════════════════════════════════════
 
-    card.innerHTML = `
+    function renderLibrary() {
+      const body = document.getElementById('drawerBody');
+      document.getElementById('videoCount').textContent =
+        `${state.videos.length} video${state.videos.length !== 1 ? 's' : ''}`;
+
+      // Save upload card before clearing
+      const uploadCard = body.querySelector('.upload-card');
+      body.innerHTML = '';
+      body.appendChild(uploadCard);
+
+      state.videos.forEach(video => {
+        const isActive = state.activeVideoId === video.id;
+        const isSearched = state.selectedVideoIds.has(video.id);
+        const canSearch = video.status === 'ready';
+        const src = video.transcript_source || 'None';
+        const hasTranscript = src !== 'None' && src !== 'No Audio' && src !== 'No Speech Detected';
+        const statusLabel = { ready: 'Ready', processing: 'Processing', pending: 'Pending', failed: 'Failed' }[video.status] || video.status;
+
+        let tBadgeLabel = 'NONE';
+        let tBadgeClass = 'badge-none';
+        if (src === 'No Audio') { tBadgeLabel = 'NO AUDIO'; tBadgeClass = 'badge-no-audio'; }
+        else if (src === 'No Speech Detected') { tBadgeLabel = 'NO SPEECH'; tBadgeClass = 'badge-no-speech'; }
+        else if (src === 'Whisper Transcription') { tBadgeLabel = 'WHISPER'; tBadgeClass = 'badge-whisper'; }
+        else if (src === 'Embedded Subtitles') { tBadgeLabel = 'EMBEDDED'; tBadgeClass = 'badge-embed'; }
+        else if (src === 'Sidecar SRT/VTT') { tBadgeLabel = 'SRT/VTT'; tBadgeClass = 'badge-embed'; }
+        else if (hasTranscript) { tBadgeLabel = 'TRANSCRIPT'; tBadgeClass = 'badge-has'; }
+
+        const card = document.createElement('div');
+        card.className = `video-card${isActive ? ' active' : ''}${isSearched ? ' search-selected' : ''}`;
+        card.id = `card-${video.id}`;
+        card.dataset.videoId = video.id;  // used by delegation listener
+
+        card.innerHTML = `
       <button class="video-card-delete" title="Remove video">✕</button>
       ${canSearch ? `<button class="video-card-search-toggle${isSearched ? ' checked' : ''}" title="${isSearched ? 'Remove from search' : 'Add to search'}">${isSearched ? '✓' : '+'}</button>` : ''}
       <div class="video-card-thumb">🎬</div>
@@ -1430,409 +1793,387 @@ function renderLibrary() {
         </div>
       </div>
     `;
-    body.appendChild(card);
-  });
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// Transcript
-// ═══════════════════════════════════════════════════════════════════
-
-async function loadTranscript(videoId) {
-  try {
-    const resp = await fetch(`${API}/api/videos/${videoId}/transcript`);
-    if (!resp.ok) return;
-    const data = await resp.json();
-    state.transcriptSegments = data.segments || [];
-
-    const source = data.source || 'None';
-    state.transcriptSource = source;
-
-    const badge = document.getElementById('transcriptSourceBadge');
-    const badgeLabels = {
-      'Whisper Transcription': 'Whisper',
-      'Embedded Subtitles':    'Embedded',
-      'Sidecar SRT/VTT':       'SRT/VTT',
-      'No Audio':              'No Audio',
-      'No Speech Detected':    'No Speech',
-      'None':                  'No Transcript',
-    };
-    badge.textContent = badgeLabels[source] || source;
-    let badgeClass = 'badge-gray';
-    if (source === 'No Audio')               badgeClass = 'badge-no-audio';
-    else if (source === 'No Speech Detected') badgeClass = 'badge-no-speech';
-    else if (source === 'Whisper Transcription') badgeClass = 'badge-whisper';
-    else if (source === 'Embedded Subtitles' || source === 'Sidecar SRT/VTT') badgeClass = 'badge-embed';
-    else if (source !== 'None')              badgeClass = 'badge-green';
-    badge.className = `transcript-source-badge ${badgeClass}`;
-
-    renderTranscript();
-  } catch (e) {
-    console.error('Transcript load error:', e);
-  }
-}
-
-function renderTranscript() {
-  const container = document.getElementById('transcriptContent');
-  if (!state.transcriptSegments.length) {
-    const src = state.transcriptSource || 'None';
-    let icon = '📄', msg = 'No transcript available';
-    if (src === 'No Audio') {
-      icon = '🔇'; msg = 'No audio track detected — visual-only video';
-    } else if (src === 'No Speech Detected') {
-      icon = '🔕'; msg = 'Audio found but no speech detected (music or ambient sound)';
-    } else if (src === 'Whisper Transcription') {
-      icon = '🎙️'; msg = 'Whisper found no speech segments in this video';
+        body.appendChild(card);
+      });
     }
-    container.innerHTML = `<div class="empty-state" style="padding:16px;">
+
+    // ═══════════════════════════════════════════════════════════════════
+    // Transcript
+    // ═══════════════════════════════════════════════════════════════════
+
+    async function loadTranscript(videoId) {
+      try {
+        const resp = await fetch(`${API}/api/videos/${videoId}/transcript`);
+        if (!resp.ok) return;
+        const data = await resp.json();
+        state.transcriptSegments = data.segments || [];
+
+        const source = data.source || 'None';
+        state.transcriptSource = source;
+
+        const badge = document.getElementById('transcriptSourceBadge');
+        const badgeLabels = {
+          'Whisper Transcription': 'Whisper',
+          'Embedded Subtitles': 'Embedded',
+          'Sidecar SRT/VTT': 'SRT/VTT',
+          'No Audio': 'No Audio',
+          'No Speech Detected': 'No Speech',
+          'None': 'No Transcript',
+        };
+        badge.textContent = badgeLabels[source] || source;
+        let badgeClass = 'badge-gray';
+        if (source === 'No Audio') badgeClass = 'badge-no-audio';
+        else if (source === 'No Speech Detected') badgeClass = 'badge-no-speech';
+        else if (source === 'Whisper Transcription') badgeClass = 'badge-whisper';
+        else if (source === 'Embedded Subtitles' || source === 'Sidecar SRT/VTT') badgeClass = 'badge-embed';
+        else if (source !== 'None') badgeClass = 'badge-green';
+        badge.className = `transcript-source-badge ${badgeClass}`;
+
+        renderTranscript();
+      } catch (e) {
+        console.error('Transcript load error:', e);
+      }
+    }
+
+    function renderTranscript() {
+      const container = document.getElementById('transcriptContent');
+      if (!state.transcriptSegments.length) {
+        const src = state.transcriptSource || 'None';
+        let icon = '📄', msg = 'No transcript available';
+        if (src === 'No Audio') {
+          icon = '🔇'; msg = 'No audio track detected — visual-only video';
+        } else if (src === 'No Speech Detected') {
+          icon = '🔕'; msg = 'Audio found but no speech detected (music or ambient sound)';
+        } else if (src === 'Whisper Transcription') {
+          icon = '🎙️'; msg = 'Whisper found no speech segments in this video';
+        }
+        container.innerHTML = `<div class="empty-state" style="padding:16px;">
       <div style="font-size:22px;margin-bottom:6px;">${icon}</div>
       <div class="subtitle">${msg}</div>
     </div>`;
-    return;
-  }
+        return;
+      }
 
-  container.innerHTML = state.transcriptSegments.map((seg, i) => `
+      container.innerHTML = state.transcriptSegments.map((seg, i) => `
     <div class="transcript-seg" id="seg-${i}" onclick="seekTo(${seg.start_time})">
       <span class="seg-time">${fmtTime(seg.start_time)}</span>
       <span class="seg-text">${escHtml(seg.text)}</span>
     </div>
   `).join('');
-}
-
-function highlightTranscriptAt(currentTime) {
-  const segs = state.transcriptSegments;
-  let activeIdx = -1;
-  for (let i = 0; i < segs.length; i++) {
-    if (currentTime >= segs[i].start_time && currentTime < segs[i].end_time) {
-      activeIdx = i;
-      break;
     }
-  }
 
-  document.querySelectorAll('.transcript-seg').forEach((el, i) => {
-    el.classList.toggle('active', i === activeIdx);
-  });
+    function highlightTranscriptAt(currentTime) {
+      const segs = state.transcriptSegments;
+      let activeIdx = -1;
+      for (let i = 0; i < segs.length; i++) {
+        if (currentTime >= segs[i].start_time && currentTime < segs[i].end_time) {
+          activeIdx = i;
+          break;
+        }
+      }
 
-  if (activeIdx >= 0) {
-    const el = document.getElementById(`seg-${activeIdx}`);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-}
+      document.querySelectorAll('.transcript-seg').forEach((el, i) => {
+        el.classList.toggle('active', i === activeIdx);
+      });
 
-// ═══════════════════════════════════════════════════════════════════
-// Topics + Timeline
-// ═══════════════════════════════════════════════════════════════════
-
-async function loadTopics(videoId) {
-  try {
-    const resp = await fetch(`${API}/api/videos/${videoId}/topics`);
-    if (!resp.ok) return;
-    const data = await resp.json();
-    state.topics = data.topics || [];
-    renderTopicMarkers();
-  } catch (e) {}
-}
-
-const MARKER_COLORS = ['#6c63ff','#ff6584','#43d88d','#ffd166','#06b6d4','#f59e0b','#8b5cf6'];
-
-function renderTopicMarkers() {
-  const bar = document.getElementById('timelineBar');
-  bar.querySelectorAll('.timeline-marker').forEach(m => m.remove());
-
-  const video = document.getElementById('mainVideo');
-  const duration = video.duration || state.activeVideo?.duration || 0;
-  if (!duration) return;
-
-  state.topics.forEach((topic, i) => {
-    const pct = (topic.start_time / duration) * 100;
-    const color = MARKER_COLORS[i % MARKER_COLORS.length];
-
-    const marker = document.createElement('div');
-    marker.className = 'timeline-marker';
-    marker.style.cssText = `left:${pct}%; background:${color};`;
-    marker.onclick = (e) => { e.stopPropagation(); seekTo(topic.start_time); };
-    marker.innerHTML = `<div class="timeline-tooltip">${escHtml(topic.title)}</div>`;
-    bar.appendChild(marker);
-  });
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// Video player
-// ═══════════════════════════════════════════════════════════════════
-
-function onVideoLoaded() {
-  const video = document.getElementById('mainVideo');
-  document.getElementById('totalTime').textContent = fmtTime(video.duration);
-  renderTopicMarkers();
-}
-
-function onVideoTimeUpdate() {
-  const video = document.getElementById('mainVideo');
-  const duration = video.duration || 1;
-  const pct = (video.currentTime / duration) * 100;
-
-  document.getElementById('timelineProgress').style.width = `${pct}%`;
-  document.getElementById('currentTime').textContent = fmtTime(video.currentTime);
-
-  highlightTranscriptAt(video.currentTime);
-}
-
-function seekFromTimeline(e) {
-  const bar = document.getElementById('timelineBar');
-  const rect = bar.getBoundingClientRect();
-  const pct = (e.clientX - rect.left) / rect.width;
-  const video = document.getElementById('mainVideo');
-  if (video.duration) {
-    video.currentTime = pct * video.duration;
-  }
-}
-
-function seekTo(timestamp, videoId) {
-  // If a specific videoId is provided and differs from active, switch first
-  if (videoId && videoId !== state.activeVideoId) {
-    const targetVideo = state.videos.find(v => v.id === videoId);
-    if (targetVideo && targetVideo.status === 'ready') {
-      selectVideo(videoId).then(() => _doSeek(timestamp));
-      return;
+      if (activeIdx >= 0) {
+        const el = document.getElementById(`seg-${activeIdx}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     }
-  }
 
-  _doSeek(timestamp);
-}
+    // ═══════════════════════════════════════════════════════════════════
+    // Topics + Timeline
+    // ═══════════════════════════════════════════════════════════════════
 
-function _doSeek(timestamp) {
-  const video = document.getElementById('mainVideo');
-  if (!video.src) return;
-
-  const doSeek = () => {
-    video.currentTime = timestamp;
-    video.play().catch(() => {});
-    const bar = document.getElementById('timelineBar');
-    if (bar) {
-      bar.classList.add('timeline-glow');
-      setTimeout(() => bar.classList.remove('timeline-glow'), 800);
+    async function loadTopics(videoId) {
+      try {
+        const resp = await fetch(`${API}/api/videos/${videoId}/topics`);
+        if (!resp.ok) return;
+        const data = await resp.json();
+        state.topics = data.topics || [];
+        renderTopicMarkers();
+      } catch (e) { }
     }
-  };
 
-  if (video.readyState >= 1) {
-    doSeek();
-  } else {
-    video.addEventListener('loadedmetadata', doSeek, { once: true });
-  }
-}
+    const MARKER_COLORS = ['#6c63ff', '#ff6584', '#43d88d', '#ffd166', '#06b6d4', '#f59e0b', '#8b5cf6'];
 
-// ═══════════════════════════════════════════════════════════════════
-// Chat / Q&A
-// ═══════════════════════════════════════════════════════════════════
+    function renderTopicMarkers() {
+      const bar = document.getElementById('timelineBar');
+      bar.querySelectorAll('.timeline-marker').forEach(m => m.remove());
 
-function enableChat() {
-  // Kept for compatibility — use refreshChatState for the full state update
-  document.getElementById('questionInput').disabled = false;
-  document.getElementById('sendBtn').disabled = false;
-}
+      const video = document.getElementById('mainVideo');
+      const duration = video.duration || state.activeVideo?.duration || 0;
+      if (!duration) return;
 
-function clearChat() {
-  // Only clears messages — does NOT disable inputs
-  // Chat inputs are controlled solely by refreshChatState() based on selectedVideoIds
-  document.getElementById('messagesArea').innerHTML = `
+      state.topics.forEach((topic, i) => {
+        const pct = (topic.start_time / duration) * 100;
+        const color = MARKER_COLORS[i % MARKER_COLORS.length];
+
+        const marker = document.createElement('div');
+        marker.className = 'timeline-marker';
+        marker.style.cssText = `left:${pct}%; background:${color};`;
+        marker.onclick = (e) => { e.stopPropagation(); seekTo(topic.start_time); };
+        marker.innerHTML = `<div class="timeline-tooltip">${escHtml(topic.title)}</div>`;
+        bar.appendChild(marker);
+      });
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // Video player
+    // ═══════════════════════════════════════════════════════════════════
+
+    function onVideoLoaded() {
+      const video = document.getElementById('mainVideo');
+      document.getElementById('totalTime').textContent = fmtTime(video.duration);
+      renderTopicMarkers();
+    }
+
+    function onVideoTimeUpdate() {
+      const video = document.getElementById('mainVideo');
+      const duration = video.duration || 1;
+      const pct = (video.currentTime / duration) * 100;
+
+      document.getElementById('timelineProgress').style.width = `${pct}%`;
+      document.getElementById('currentTime').textContent = fmtTime(video.currentTime);
+
+      highlightTranscriptAt(video.currentTime);
+    }
+
+    function seekFromTimeline(e) {
+      const bar = document.getElementById('timelineBar');
+      const rect = bar.getBoundingClientRect();
+      const pct = (e.clientX - rect.left) / rect.width;
+      const video = document.getElementById('mainVideo');
+      if (video.duration) {
+        video.currentTime = pct * video.duration;
+      }
+    }
+
+    function seekTo(timestamp, videoId) {
+      // Delegate completely to selectVideo which handles both same-video and cross-video
+      // seeking natively and safely via media fragments.
+      selectVideo(videoId || state.activeVideoId, timestamp);
+
+      const bar = document.getElementById('timelineBar');
+      if (bar) {
+        bar.classList.add('timeline-glow');
+        setTimeout(() => bar.classList.remove('timeline-glow'), 800);
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // Chat / Q&A
+    // ═══════════════════════════════════════════════════════════════════
+
+    function enableChat() {
+      // Kept for compatibility — use refreshChatState for the full state update
+      document.getElementById('questionInput').disabled = false;
+      document.getElementById('sendBtn').disabled = false;
+    }
+
+    function clearChat() {
+      // Only clears messages — does NOT disable inputs
+      // Chat inputs are controlled solely by refreshChatState() based on selectedVideoIds
+      document.getElementById('messagesArea').innerHTML = `
     <div class="empty-state">
       <div class="icon">💬</div>
       <div class="title">Video Q&A</div>
       <div class="subtitle">Ask anything about the video content</div>
     </div>
   `;
-}
-
-function handleInputKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendQuestion();
-  }
-}
-
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
-}
-
-// Discovery intent patterns — queries asking WHICH video contains something
-const DISCOVERY_PATTERNS = [
-  /which video/i, /what video/i, /find.*video/i, /video.*about/i,
-  /video.*discuss/i, /video.*talk/i, /video.*cover/i, /video.*explain/i,
-  /video.*mention/i, /video.*show/i, /in which/i, /from which video/i,
-  /search.*all.*video/i, /across.*video/i, /which one.*discuss/i,
-  /what.*videos?.*contain/i, /show.*videos?/i,
-];
-
-function isDiscoveryQuery(question) {
-  return DISCOVERY_PATTERNS.some(p => p.test(question));
-}
-
-async function sendQuestion() {
-  const input = document.getElementById('questionInput');
-  const question = input.value.trim();
-
-  if (!question) return;
-
-  // Check if it's a discovery query — "which video talks about X?"
-  const readyVideos = state.videos.filter(v => v.status === 'ready');
-  if (isDiscoveryQuery(question) && readyVideos.length > 1) {
-    input.value = '';
-    autoResize(input);
-    await sendDiscovery(question);
-    return;
-  }
-
-  // Determine target: selected videos or fall back to active single video
-  const targetIds = state.selectedVideoIds.size > 0
-    ? [...state.selectedVideoIds]
-    : (state.activeVideoId ? [state.activeVideoId] : []);
-
-  if (targetIds.length === 0) return;
-
-  input.value = '';
-  autoResize(input);
-
-  addMessage('user', question);
-  const loadingId = addMessage('assistant', null, true);
-
-  document.getElementById('sendBtn').disabled = true;
-  document.getElementById('questionInput').disabled = true;
-
-  // Build request body: single or multi
-  const body = targetIds.length === 1
-    ? { video_id: targetIds[0], question }
-    : { video_ids: targetIds, question };
-
-  try {
-    const resp = await fetch(`${API}/api/query`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-
-    if (!resp.ok) {
-      const err = await resp.json().catch(() => ({ detail: 'Query failed' }));
-      throw new Error(err.detail || 'Query failed');
     }
 
-    const data = await resp.json();
-    removeMessage(loadingId);
-    renderAnswer(data);
-
-    if (data.primary_timestamp != null) {
-      // Prefer source_video_id; fall back to matching timestamp's video_id
-      const primaryVidId = data.source_video_id
-        || (data.timestamps || []).find(
-            ts => ts.video_id && Math.abs(ts.start - data.primary_timestamp) < 1.0
-          )?.video_id;
-      seekTo(data.primary_timestamp, primaryVidId);
-    } else if (data.source_video_id && data.source_video_id !== state.activeVideoId) {
-      // Switch to the relevant video even without a specific timestamp
-      await selectVideo(data.source_video_id);
+    function handleInputKey(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendQuestion();
+      }
     }
 
-  } catch (e) {
-    removeMessage(loadingId);
-    addMessage('assistant', `Error: ${e.message}`);
-  } finally {
-    document.getElementById('sendBtn').disabled = false;
-    document.getElementById('questionInput').disabled = false;
-    document.getElementById('questionInput').focus();
-  }
-}
-
-async function sendDiscovery(question) {
-  addMessage('user', question);
-  const loadingId = addMessage('assistant', null, true);
-  document.getElementById('sendBtn').disabled = true;
-  document.getElementById('questionInput').disabled = true;
-
-  try {
-    // Step 1: Discover top video
-    const discResp = await fetch(`${API}/api/discover`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question }),
-    });
-    if (!discResp.ok) {
-      const err = await discResp.json().catch(() => ({ detail: 'Discovery failed' }));
-      throw new Error(err.detail || 'Discovery failed');
-    }
-    const discData = await discResp.json();
-    const videos = discData.videos || [];
-
-    if (!videos.length) {
-      removeMessage(loadingId);
-      addMessage('assistant', "I couldn't find any video relevant to that question.");
-      return;
+    function autoResize(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 100) + 'px';
     }
 
-    // Step 2: Auto-select top video in player
-    const topVid = videos[0];
-    await selectVideo(topVid.video_id);
+    // Discovery intent patterns — queries asking WHICH video contains something
+    const DISCOVERY_PATTERNS = [
+      /which video/i, /what video/i, /find.*video/i, /video.*about/i,
+      /video.*discuss/i, /video.*talk/i, /video.*cover/i, /video.*explain/i,
+      /video.*mention/i, /video.*show/i, /in which/i, /from which video/i,
+      /search.*all.*video/i, /across.*video/i, /which one.*discuss/i,
+      /what.*videos?.*contain/i, /show.*videos?/i,
+    ];
 
-    // Step 3: Query that video with the same question
-    const qResp = await fetch(`${API}/api/query`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ video_id: topVid.video_id, question }),
-    });
-    if (!qResp.ok) {
-      const err = await qResp.json().catch(() => ({ detail: 'Query failed' }));
-      throw new Error(err.detail || 'Query failed');
-    }
-    const qData = await qResp.json();
-
-    removeMessage(loadingId);
-
-    // Step 4: Render answer with optional "also in" list
-    renderAnswer(qData, videos.length > 1 ? videos.slice(1) : []);
-
-    // Step 5: Seek to primary timestamp
-    if (qData.primary_timestamp != null) {
-      seekTo(qData.primary_timestamp, topVid.video_id);
+    function isDiscoveryQuery(question) {
+      return DISCOVERY_PATTERNS.some(p => p.test(question));
     }
 
-  } catch (e) {
-    removeMessage(loadingId);
-    addMessage('assistant', `Error: ${e.message}`);
-  } finally {
-    document.getElementById('sendBtn').disabled = false;
-    document.getElementById('questionInput').disabled = false;
-    document.getElementById('questionInput').focus();
-  }
-}
+    async function sendQuestion() {
+      const input = document.getElementById('questionInput');
+      const question = input.value.trim();
 
-function renderDiscoveryResults(data) {
-  const id = `msg-${++messageCounter}`;
-  const area = document.getElementById('messagesArea');
-  const videos = data.videos || [];
-  const total = data.total_searched || 0;
+      if (!question) return;
 
-  const div = document.createElement('div');
-  div.className = 'message assistant fade-in';
-  div.id = id;
+      // Check if it's a discovery query — "which video talks about X?"
+      const readyVideos = state.videos.filter(v => v.status === 'ready');
+      if (isDiscoveryQuery(question) && readyVideos.length > 1) {
+        input.value = '';
+        autoResize(input);
+        await sendDiscovery(question);
+        return;
+      }
 
-  let html = '<div class="message-bubble">';
-  if (videos.length === 0) {
-    html += `<p>I searched all ${total} video${total !== 1 ? 's' : ''} but didn't find anything strongly relevant to that question.</p>`;
-  } else {
-    html += `<p>Found <strong>${videos.length}</strong> relevant video${videos.length !== 1 ? 's' : ''} out of ${total} searched:</p>`;
-  }
-  html += '</div>';
+      // Determine target: selected videos or fall back to active single video
+      const targetIds = state.selectedVideoIds.size > 0
+        ? [...state.selectedVideoIds]
+        : (state.activeVideoId ? [state.activeVideoId] : []);
 
-  if (videos.length > 0) {
-    html += '<div class="discovery-results">';
-    html += '<div class="discovery-label">Relevant Videos — click to select</div>';
-    videos.forEach((vid, i) => {
-      const pct = Math.round(vid.relevance_score * 100);
-      const isSelected = state.selectedVideoIds.has(vid.video_id);
-      const safeFilename = escHtml(vid.filename);
-      const safeTopic = escHtml(vid.topic_title || '');
-      const safeSnippet = escHtml((vid.snippet || '').substring(0, 180));
-      const durationStr = vid.duration ? ` · ${Math.round(vid.duration)}s` : '';
-      html += `
+      if (targetIds.length === 0) return;
+
+      input.value = '';
+      autoResize(input);
+
+      addMessage('user', question);
+      const loadingId = addMessage('assistant', null, true);
+
+      document.getElementById('sendBtn').disabled = true;
+      document.getElementById('questionInput').disabled = true;
+
+      // Build request body: single or multi
+      const body = targetIds.length === 1
+        ? { video_id: targetIds[0], question }
+        : { video_ids: targetIds, question };
+
+      try {
+        const resp = await fetch(`${API}/api/query`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        if (!resp.ok) {
+          const err = await resp.json().catch(() => ({ detail: 'Query failed' }));
+          throw new Error(err.detail || 'Query failed');
+        }
+
+        const data = await resp.json();
+        removeMessage(loadingId);
+        renderAnswer(data);
+
+        if (data.primary_timestamp != null) {
+          // Prefer source_video_id; fall back to matching timestamp's video_id
+          const primaryVidId = data.source_video_id
+            || (data.timestamps || []).find(
+              ts => ts.video_id && Math.abs(ts.start - data.primary_timestamp) < 1.0
+            )?.video_id;
+          seekTo(data.primary_timestamp, primaryVidId);
+        } else if (data.source_video_id && data.source_video_id !== state.activeVideoId) {
+          // Switch to the relevant video even without a specific timestamp
+          await selectVideo(data.source_video_id);
+        }
+
+      } catch (e) {
+        removeMessage(loadingId);
+        addMessage('assistant', `Error: ${e.message}`);
+      } finally {
+        document.getElementById('sendBtn').disabled = false;
+        document.getElementById('questionInput').disabled = false;
+        document.getElementById('questionInput').focus();
+      }
+    }
+
+    async function sendDiscovery(question) {
+      addMessage('user', question);
+      const loadingId = addMessage('assistant', null, true);
+      document.getElementById('sendBtn').disabled = true;
+      document.getElementById('questionInput').disabled = true;
+
+      try {
+        // Step 1: Discover top video
+        const discResp = await fetch(`${API}/api/discover`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question }),
+        });
+        if (!discResp.ok) {
+          const err = await discResp.json().catch(() => ({ detail: 'Discovery failed' }));
+          throw new Error(err.detail || 'Discovery failed');
+        }
+        const discData = await discResp.json();
+        const videos = discData.videos || [];
+
+        if (!videos.length) {
+          removeMessage(loadingId);
+          addMessage('assistant', "I couldn't find any video relevant to that question.");
+          return;
+        }
+
+        // Step 2: Auto-select top video in player
+        const topVid = videos[0];
+        await selectVideo(topVid.video_id);
+
+        // Step 3: Query that video with the same question
+        const qResp = await fetch(`${API}/api/query`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ video_id: topVid.video_id, question }),
+        });
+        if (!qResp.ok) {
+          const err = await qResp.json().catch(() => ({ detail: 'Query failed' }));
+          throw new Error(err.detail || 'Query failed');
+        }
+        const qData = await qResp.json();
+
+        removeMessage(loadingId);
+
+        // Step 4: Render answer (supporting_videos come from the response itself)
+        renderAnswer(qData);
+
+        // Step 5: Seek to primary timestamp
+        if (qData.primary_timestamp != null) {
+          seekTo(qData.primary_timestamp, topVid.video_id);
+        }
+
+      } catch (e) {
+        removeMessage(loadingId);
+        addMessage('assistant', `Error: ${e.message}`);
+      } finally {
+        document.getElementById('sendBtn').disabled = false;
+        document.getElementById('questionInput').disabled = false;
+        document.getElementById('questionInput').focus();
+      }
+    }
+
+    function renderDiscoveryResults(data) {
+      const id = `msg-${++messageCounter}`;
+      const area = document.getElementById('messagesArea');
+      const videos = data.videos || [];
+      const total = data.total_searched || 0;
+
+      const div = document.createElement('div');
+      div.className = 'message assistant fade-in';
+      div.id = id;
+
+      let html = '<div class="message-bubble">';
+      if (videos.length === 0) {
+        html += `<p>I searched all ${total} video${total !== 1 ? 's' : ''} but didn't find anything strongly relevant to that question.</p>`;
+      } else {
+        html += `<p>Found <strong>${videos.length}</strong> relevant video${videos.length !== 1 ? 's' : ''} out of ${total} searched:</p>`;
+      }
+      html += '</div>';
+
+      if (videos.length > 0) {
+        html += '<div class="discovery-results">';
+        html += '<div class="discovery-label">Relevant Videos — click to select</div>';
+        videos.forEach((vid, i) => {
+          const pct = Math.round(vid.relevance_score * 100);
+          const isSelected = state.selectedVideoIds.has(vid.video_id);
+          const safeFilename = escHtml(vid.filename);
+          const safeTopic = escHtml(vid.topic_title || '');
+          const safeSnippet = escHtml((vid.snippet || '').substring(0, 180));
+          const durationStr = vid.duration ? ` · ${Math.round(vid.duration)}s` : '';
+          html += `
         <div class="discovery-card${isSelected ? ' selected' : ''}" id="dc-${vid.video_id}" onclick="selectVideoFromDiscovery('${vid.video_id}')">
           <div class="discovery-rank">#${i + 1}</div>
           <div class="discovery-info">
@@ -1847,328 +2188,338 @@ function renderDiscoveryResults(data) {
           </div>
         </div>
       `;
-    });
-    html += '</div>';
-  }
+        });
+        html += '</div>';
+      }
 
-  div.innerHTML = html;
-  area.appendChild(div);
-  area.scrollTop = area.scrollHeight;
-}
+      div.innerHTML = html;
+      area.appendChild(div);
+      area.scrollTop = area.scrollHeight;
+    }
 
-function selectVideoFromDiscovery(videoId) {
-  const video = state.videos.find(v => v.id === videoId);
-  if (!video || video.status !== 'ready') return;
+    function selectVideoFromDiscovery(videoId) {
+      const video = state.videos.find(v => v.id === videoId);
+      if (!video || video.status !== 'ready') return;
 
-  // Toggle: if already selected, deselect; otherwise add to scope
-  const wasSelected = state.selectedVideoIds.has(videoId);
-  if (wasSelected) {
-    state.selectedVideoIds.delete(videoId);
-  } else {
-    state.selectedVideoIds.add(videoId);
-    // Load video into player if nothing is active
-    if (!state.activeVideoId) selectVideo(videoId);
-  }
+      // Toggle: if already selected, deselect; otherwise add to scope
+      const wasSelected = state.selectedVideoIds.has(videoId);
+      if (wasSelected) {
+        state.selectedVideoIds.delete(videoId);
+      } else {
+        state.selectedVideoIds.add(videoId);
+        // Load video into player if nothing is active
+        if (!state.activeVideoId) selectVideo(videoId);
+      }
 
-  // Update discovery card styling
-  const card = document.getElementById(`dc-${videoId}`);
-  const action = document.getElementById(`dca-${videoId}`);
-  if (card) card.classList.toggle('selected', !wasSelected);
-  if (action) action.textContent = !wasSelected
-    ? '✓ Selected — ask a follow-up question'
-    : 'Click to select & ask follow-up';
+      // Update discovery card styling
+      const card = document.getElementById(`dc-${videoId}`);
+      const action = document.getElementById(`dca-${videoId}`);
+      if (card) card.classList.toggle('selected', !wasSelected);
+      if (action) action.textContent = !wasSelected
+        ? '✓ Selected — ask a follow-up question'
+        : 'Click to select & ask follow-up';
 
-  // Update library card toggle
-  _updateCardSearchToggle(videoId, !wasSelected);
-  refreshChatState();
-}
+      // Update library card toggle
+      _updateCardSearchToggle(videoId, !wasSelected);
+      refreshChatState();
+    }
 
-let messageCounter = 0;
+    let messageCounter = 0;
 
-function addMessage(role, text, loading = false) {
-  const id = `msg-${++messageCounter}`;
-  const area = document.getElementById('messagesArea');
+    function addMessage(role, text, loading = false) {
+      const id = `msg-${++messageCounter}`;
+      const area = document.getElementById('messagesArea');
 
-  const emptyState = area.querySelector('.empty-state');
-  if (emptyState) emptyState.remove();
+      const emptyState = area.querySelector('.empty-state');
+      if (emptyState) emptyState.remove();
 
-  const div = document.createElement('div');
-  div.className = `message ${role} fade-in`;
-  div.id = id;
+      const div = document.createElement('div');
+      div.className = `message ${role} fade-in`;
+      div.id = id;
 
-  if (loading) {
-    div.innerHTML = `
+      if (loading) {
+        div.innerHTML = `
       <div class="message-bubble">
         <div class="loading-dots">
           <span></span><span></span><span></span>
         </div>
       </div>
     `;
-  } else {
-    div.innerHTML = `<div class="message-bubble">${formatMarkdown(text)}</div>`;
-  }
+      } else {
+        div.innerHTML = `<div class="message-bubble">${formatMarkdown(text)}</div>`;
+      }
 
-  area.appendChild(div);
-  area.scrollTop = area.scrollHeight;
-  return id;
-}
+      area.appendChild(div);
+      area.scrollTop = area.scrollHeight;
+      return id;
+    }
 
-function removeMessage(id) {
-  document.getElementById(id)?.remove();
-}
+    function removeMessage(id) {
+      document.getElementById(id)?.remove();
+    }
 
-function renderAnswer(data, otherVideos = []) {
-  const id = `msg-${++messageCounter}`;
-  const area = document.getElementById('messagesArea');
+    function renderAnswer(data) {
+      const id = `msg-${++messageCounter}`;
+      const area = document.getElementById('messagesArea');
 
-  const div = document.createElement('div');
-  div.className = 'message assistant fade-in';
-  div.id = id;
+      const div = document.createElement('div');
+      div.className = 'message assistant fade-in';
+      div.id = id;
 
-  const isMultiVideo = (data.timestamps || []).some(ts => ts.video_id);
-  const timestampChips = (data.timestamps || []).map((ts, i) => {
-    const isPrimary = data.primary_timestamp != null &&
-                      Math.abs(ts.start - data.primary_timestamp) < 0.5;
-    const vidArg = ts.video_id ? `, '${ts.video_id}'` : '';
-    const vidLabel = isMultiVideo && ts.video_filename
-      ? `<span style="font-size:9px;opacity:0.7;margin-right:3px;">${escHtml(ts.video_filename.split('/').pop().replace(/\.[^.]+$/, ''))}</span>`
-      : '';
-    return `
+      // Only show timestamp chips for the PRIMARY video — filter out other-video timestamps
+      const primaryVid = data.source_video_id;
+      const primaryTimestamps = (data.timestamps || []).filter(ts =>
+        !ts.video_id || ts.video_id === primaryVid
+      );
+
+      const timestampChips = primaryTimestamps.map((ts) => {
+        const isPrimary = data.primary_timestamp != null &&
+          Math.abs(ts.start - data.primary_timestamp) < 0.5;
+        return `
       <button
         class="timestamp-chip ${isPrimary ? 'primary' : ''}"
-        onclick="seekTo(${ts.start}${vidArg})"
-        title="Jump to ${fmtTime(ts.start)}${ts.video_filename ? ' in ' + ts.video_filename : ''}"
-      >
-        ${vidLabel}▶ ${fmtTime(ts.start)}${ts.end ? ` – ${fmtTime(ts.end)}` : ''}
-      </button>
+        onclick="seekTo(${ts.start}${primaryVid ? `, '${primaryVid}'` : ''})"
+        title="Jump to ${fmtTime(ts.start)}"
+      >▶ ${fmtTime(ts.start)}${ts.end ? ` – ${fmtTime(ts.end)}` : ''}</button>
     `;
-  }).join('');
+      }).join('');
 
-  // Seek badge shown when auto-seeking to a timestamp
-  const seekBadge = data.primary_timestamp != null
-    ? `<div class="seek-badge">▶ Seeking to ${fmtTime(data.primary_timestamp)}</div>`
-    : '';
+      // Seek badge
+      const seekBadge = data.primary_timestamp != null
+        ? `<div class="seek-badge">▶ Seeking to ${fmtTime(data.primary_timestamp)}</div>`
+        : '';
 
-  // "Also relevant" row for other videos from discovery
-  const alsoIn = otherVideos.length > 0
-    ? `<div class="also-in">Also relevant: ${
-        otherVideos.slice(0, 3).map(v => {
-          const name = escHtml(v.filename.split('/').pop().replace(/\.[^.]+$/, ''));
-          return `<span class="also-in-chip" onclick="selectVideo('${v.video_id}')">${name}</span>`;
-        }).join('')
-      }</div>`
-    : '';
+      // Supporting videos — rendered as cards BELOW the bubble, never inside the answer text
+      const supporting = (data.supporting_videos || []).slice(0, 4);
+      const supportingHtml = supporting.length > 0
+        ? `<div class="supporting-videos">
+        <div class="supporting-label">Also relevant</div>
+        ${supporting.map(sv => {
+          const name = escHtml((sv.video_filename || sv.video_id || '').split('/').pop().replace(/\.[^.]+$/, ''));
+          const snippet = escHtml(sv.snippet || '');
+          const ts = sv.timestamp > 0 ? fmtTime(sv.timestamp) : '';
+          return `<div class="supporting-card" onclick="seekTo(${sv.timestamp || 0}, '${sv.video_id}')">
+            <div class="supporting-card-icon">🎬</div>
+            <div class="supporting-card-body">
+              <div class="supporting-card-name">${name}</div>
+              ${snippet ? `<div class="supporting-card-snippet">${snippet}</div>` : ''}
+            </div>
+            ${ts ? `<div class="supporting-card-ts">▶ ${ts}</div>` : ''}
+          </div>`;
+        }).join('')}
+      </div>`
+        : '';
 
-  div.innerHTML = `
+      div.innerHTML = `
     ${seekBadge}
     <div class="message-bubble">${formatMarkdown(data.answer)}</div>
     ${timestampChips ? `<div class="timestamp-chips">${timestampChips}</div>` : ''}
-    ${alsoIn}
+    ${supportingHtml}
   `;
 
-  area.appendChild(div);
-  area.scrollTop = area.scrollHeight;
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// WebSocket progress
-// ═══════════════════════════════════════════════════════════════════
-
-function connectProgressWS(videoId) {
-  if (state.processingWs) {
-    state.processingWs.close();
-  }
-
-  const wsProto = location.protocol === 'https:' ? 'wss:' : 'ws:';
-  const ws = new WebSocket(`${wsProto}//${location.host}/api/ws/progress/${videoId}`);
-  state.processingWs = ws;
-
-  ws.onmessage = async (evt) => {
-    const msg = JSON.parse(evt.data);
-    if (msg.type === 'progress') {
-      const d = msg.data;
-      if (d.progress >= 0) {
-        showProcessingOverlay(d.current_step, d.progress);
-      } else {
-        hideProcessingOverlay();
-        showError(d.current_step);
-      }
-    } else if (msg.type === 'status' && msg.data.status === 'ready') {
-      hideProcessingOverlay();
-      await loadVideos();  // auto-adds to scope + calls refreshChatState
-      if (state.activeVideoId === videoId) {
-        loadTranscript(videoId);
-        loadTopics(videoId);
-      }
+      area.appendChild(div);
+      area.scrollTop = area.scrollHeight;
     }
-  };
 
-  ws.onclose = () => {
-    if (state.activeVideoId === videoId) {
+    // ═══════════════════════════════════════════════════════════════════
+    // WebSocket progress
+    // ═══════════════════════════════════════════════════════════════════
+
+    function connectProgressWS(videoId) {
+      if (state.processingWs) {
+        state.processingWs.close();
+      }
+
+      const wsProto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const ws = new WebSocket(`${wsProto}//${location.host}/api/ws/progress/${videoId}`);
+      state.processingWs = ws;
+
+      ws.onmessage = async (evt) => {
+        const msg = JSON.parse(evt.data);
+        if (msg.type === 'progress') {
+          const d = msg.data;
+          if (d.progress >= 0) {
+            showProcessingOverlay(d.current_step, d.progress);
+          } else {
+            hideProcessingOverlay();
+            showError(d.current_step);
+          }
+        } else if (msg.type === 'status' && msg.data.status === 'ready') {
+          hideProcessingOverlay();
+          await loadVideos();  // auto-adds to scope + calls refreshChatState
+          if (state.activeVideoId === videoId) {
+            loadTranscript(videoId);
+            loadTopics(videoId);
+          }
+        }
+      };
+
+      ws.onclose = () => {
+        if (state.activeVideoId === videoId) {
+          const video = state.videos.find(v => v.id === videoId);
+          if (video && (video.status === 'processing' || video.status === 'pending')) {
+            setTimeout(() => connectProgressWS(videoId), 3000);
+          }
+        }
+      };
+
+      const pingInterval = setInterval(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send('ping');
+        } else {
+          clearInterval(pingInterval);
+        }
+      }, 30000);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // Processing overlay
+    // ═══════════════════════════════════════════════════════════════════
+
+    function showProcessingOverlay(text, progress) {
+      const overlay = document.getElementById('processingOverlay');
+      overlay.style.display = 'flex';
+      document.getElementById('processingText').textContent = text;
+      document.getElementById('processingFill').style.width = `${Math.max(0, progress)}%`;
+    }
+
+    function hideProcessingOverlay() {
+      document.getElementById('processingOverlay').style.display = 'none';
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // Delete video
+    // ═══════════════════════════════════════════════════════════════════
+
+    async function deleteVideo(videoId) {
+      // stopPropagation already handled by the delegated listener
       const video = state.videos.find(v => v.id === videoId);
-      if (video && (video.status === 'processing' || video.status === 'pending')) {
-        setTimeout(() => connectProgressWS(videoId), 3000);
-      }
-    }
-  };
+      const name = video ? video.filename : videoId;
+      if (!confirm(`Remove "${name}" and all its data? This cannot be undone.`)) return;
 
-  const pingInterval = setInterval(() => {
-    if (ws.readyState === WebSocket.OPEN) {
-      ws.send('ping');
-    } else {
-      clearInterval(pingInterval);
-    }
-  }, 30000);
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// Processing overlay
-// ═══════════════════════════════════════════════════════════════════
-
-function showProcessingOverlay(text, progress) {
-  const overlay = document.getElementById('processingOverlay');
-  overlay.style.display = 'flex';
-  document.getElementById('processingText').textContent = text;
-  document.getElementById('processingFill').style.width = `${Math.max(0, progress)}%`;
-}
-
-function hideProcessingOverlay() {
-  document.getElementById('processingOverlay').style.display = 'none';
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// Delete video
-// ═══════════════════════════════════════════════════════════════════
-
-async function deleteVideo(videoId) {
-  // stopPropagation already handled by the delegated listener
-  const video = state.videos.find(v => v.id === videoId);
-  const name = video ? video.filename : videoId;
-  if (!confirm(`Remove "${name}" and all its data? This cannot be undone.`)) return;
-
-  try {
-    const resp = await fetch(`${API}/api/videos/${videoId}`, { method: 'DELETE' });
-    if (!resp.ok) {
-      let errMsg = `HTTP ${resp.status}`;
       try {
-        const err = await resp.json();
-        errMsg = err.detail || errMsg;
-      } catch {
-        errMsg = await resp.text().catch(() => errMsg);
+        const resp = await fetch(`${API}/api/videos/${videoId}`, { method: 'DELETE' });
+        if (!resp.ok) {
+          let errMsg = `HTTP ${resp.status}`;
+          try {
+            const err = await resp.json();
+            errMsg = err.detail || errMsg;
+          } catch {
+            errMsg = await resp.text().catch(() => errMsg);
+          }
+          alert(`Failed to delete: ${errMsg}`);
+          return;
+        }
+
+        state.selectedVideoIds.delete(videoId);
+
+        if (state.activeVideoId === videoId) {
+          state.activeVideoId = null;
+          state.activeVideo = null;
+          const mainVideo = document.getElementById('mainVideo');
+          mainVideo.pause();
+          mainVideo.src = '';
+          mainVideo.load();
+          mainVideo.style.display = 'none';
+          document.getElementById('noVideoPlaceholder').style.display = 'flex';
+          document.getElementById('headerStatus').textContent = 'No video selected';
+          document.getElementById('transcriptContent').innerHTML =
+            '<div class="empty-state" style="padding:16px;"><div class="icon" style="font-size:24px;">📄</div><div class="subtitle">Transcript will appear here after processing</div></div>';
+          hideProcessingOverlay();
+        }
+
+        await loadVideos();
+      } catch (e) {
+        alert(`Error: ${e.message}`);
       }
-      alert(`Failed to delete: ${errMsg}`);
-      return;
     }
 
-    state.selectedVideoIds.delete(videoId);
+    // ═══════════════════════════════════════════════════════════════════
+    // Upload modal — multi-file support
+    // ═══════════════════════════════════════════════════════════════════
 
-    if (state.activeVideoId === videoId) {
-      state.activeVideoId = null;
-      state.activeVideo = null;
-      const mainVideo = document.getElementById('mainVideo');
-      mainVideo.pause();
-      mainVideo.src = '';
-      mainVideo.load();
-      mainVideo.style.display = 'none';
-      document.getElementById('noVideoPlaceholder').style.display = 'flex';
-      document.getElementById('headerStatus').textContent = 'No video selected';
-      document.getElementById('transcriptContent').innerHTML =
-        '<div class="empty-state" style="padding:16px;"><div class="icon" style="font-size:24px;">📄</div><div class="subtitle">Transcript will appear here after processing</div></div>';
-      hideProcessingOverlay();
+    function openUploadModal() {
+      state.pendingFiles = [];
+      document.getElementById('uploadModal').style.display = 'flex';
+      document.getElementById('uploadBtn').disabled = true;
+      document.getElementById('uploadStatusLabel').style.display = 'none';
+      document.getElementById('fileQueue').style.display = 'none';
+      document.getElementById('fileQueue').innerHTML = '';
+      document.getElementById('cancelUploadBtn').textContent = 'Cancel';
+      resetDropZone();
     }
 
-    await loadVideos();
-  } catch (e) {
-    alert(`Error: ${e.message}`);
-  }
-}
+    function closeUploadModal(e) {
+      if (e && e.target !== document.getElementById('uploadModal')) return;
+      document.getElementById('uploadModal').style.display = 'none';
+    }
 
-// ═══════════════════════════════════════════════════════════════════
-// Upload modal — multi-file support
-// ═══════════════════════════════════════════════════════════════════
+    function resetDropZone() {
+      document.getElementById('dropIcon').textContent = '📁';
+      document.getElementById('dropText').textContent = 'Drop videos here or click to browse';
+      document.getElementById('dropSub').textContent = 'MP4, MKV, MOV, AVI, WebM — multiple files supported';
+      document.getElementById('dropZone').classList.remove('drag-over');
+    }
 
-function openUploadModal() {
-  state.pendingFiles = [];
-  document.getElementById('uploadModal').style.display = 'flex';
-  document.getElementById('uploadBtn').disabled = true;
-  document.getElementById('uploadStatusLabel').style.display = 'none';
-  document.getElementById('fileQueue').style.display = 'none';
-  document.getElementById('fileQueue').innerHTML = '';
-  document.getElementById('cancelUploadBtn').textContent = 'Cancel';
-  resetDropZone();
-}
+    function handleDragOver(e) {
+      e.preventDefault();
+      document.getElementById('dropZone').classList.add('drag-over');
+    }
 
-function closeUploadModal(e) {
-  if (e && e.target !== document.getElementById('uploadModal')) return;
-  document.getElementById('uploadModal').style.display = 'none';
-}
+    function handleDragLeave() {
+      document.getElementById('dropZone').classList.remove('drag-over');
+    }
 
-function resetDropZone() {
-  document.getElementById('dropIcon').textContent = '📁';
-  document.getElementById('dropText').textContent = 'Drop videos here or click to browse';
-  document.getElementById('dropSub').textContent = 'MP4, MKV, MOV, AVI, WebM — multiple files supported';
-  document.getElementById('dropZone').classList.remove('drag-over');
-}
+    function handleDrop(e) {
+      e.preventDefault();
+      document.getElementById('dropZone').classList.remove('drag-over');
+      const files = Array.from(e.dataTransfer?.files || []);
+      files.forEach(f => addFileToQueue(f));
+    }
 
-function handleDragOver(e) {
-  e.preventDefault();
-  document.getElementById('dropZone').classList.add('drag-over');
-}
+    function handleFileSelect(e) {
+      const files = Array.from(e.target.files || []);
+      files.forEach(f => addFileToQueue(f));
+      e.target.value = '';  // reset so same file can be re-added
+    }
 
-function handleDragLeave() {
-  document.getElementById('dropZone').classList.remove('drag-over');
-}
+    function addFileToQueue(file) {
+      const videoExts = /\.(mp4|mkv|mov|avi|webm|m4v)$/i;
+      if (!file.type.startsWith('video/') && !videoExts.test(file.name)) {
+        return;  // skip non-video files silently
+      }
+      // Avoid duplicates by name
+      if (state.pendingFiles.find(f => f.name === file.name)) return;
 
-function handleDrop(e) {
-  e.preventDefault();
-  document.getElementById('dropZone').classList.remove('drag-over');
-  const files = Array.from(e.dataTransfer?.files || []);
-  files.forEach(f => addFileToQueue(f));
-}
+      state.pendingFiles.push(file);
+      renderFileQueue();
+    }
 
-function handleFileSelect(e) {
-  const files = Array.from(e.target.files || []);
-  files.forEach(f => addFileToQueue(f));
-  e.target.value = '';  // reset so same file can be re-added
-}
+    function removeFileFromQueue(fileName) {
+      state.pendingFiles = state.pendingFiles.filter(f => f.name !== fileName);
+      renderFileQueue();
+    }
 
-function addFileToQueue(file) {
-  const videoExts = /\.(mp4|mkv|mov|avi|webm|m4v)$/i;
-  if (!file.type.startsWith('video/') && !videoExts.test(file.name)) {
-    return;  // skip non-video files silently
-  }
-  // Avoid duplicates by name
-  if (state.pendingFiles.find(f => f.name === file.name)) return;
+    function renderFileQueue() {
+      const queue = document.getElementById('fileQueue');
+      const btn = document.getElementById('uploadBtn');
 
-  state.pendingFiles.push(file);
-  renderFileQueue();
-}
+      if (state.pendingFiles.length === 0) {
+        queue.style.display = 'none';
+        queue.innerHTML = '';
+        btn.disabled = true;
+        resetDropZone();
+        return;
+      }
 
-function removeFileFromQueue(fileName) {
-  state.pendingFiles = state.pendingFiles.filter(f => f.name !== fileName);
-  renderFileQueue();
-}
+      queue.style.display = 'flex';
+      document.getElementById('dropIcon').textContent = '✅';
+      document.getElementById('dropText').textContent = `${state.pendingFiles.length} file${state.pendingFiles.length > 1 ? 's' : ''} queued`;
+      document.getElementById('dropSub').textContent = 'Drop more files or click to add';
+      btn.disabled = false;
+      btn.textContent = `Upload All (${state.pendingFiles.length})`;
 
-function renderFileQueue() {
-  const queue = document.getElementById('fileQueue');
-  const btn = document.getElementById('uploadBtn');
-
-  if (state.pendingFiles.length === 0) {
-    queue.style.display = 'none';
-    queue.innerHTML = '';
-    btn.disabled = true;
-    resetDropZone();
-    return;
-  }
-
-  queue.style.display = 'flex';
-  document.getElementById('dropIcon').textContent = '✅';
-  document.getElementById('dropText').textContent = `${state.pendingFiles.length} file${state.pendingFiles.length > 1 ? 's' : ''} queued`;
-  document.getElementById('dropSub').textContent = 'Drop more files or click to add';
-  btn.disabled = false;
-  btn.textContent = `Upload All (${state.pendingFiles.length})`;
-
-  queue.innerHTML = state.pendingFiles.map(f => `
+      queue.innerHTML = state.pendingFiles.map(f => `
     <div class="file-queue-item" id="qi-${CSS.escape(f.name)}">
       <span class="file-name" title="${escHtml(f.name)}">${escHtml(f.name)}</span>
       <span class="file-size">${(f.size / 1024 / 1024).toFixed(1)} MB</span>
@@ -2178,145 +2529,147 @@ function renderFileQueue() {
       </div>
     </div>
   `).join('');
-}
-
-async function startUpload() {
-  if (state.pendingFiles.length === 0) return;
-
-  const btn = document.getElementById('uploadBtn');
-  const cancelBtn = document.getElementById('cancelUploadBtn');
-  const statusLabel = document.getElementById('uploadStatusLabel');
-
-  btn.disabled = true;
-  cancelBtn.textContent = 'Close';
-  statusLabel.style.display = 'block';
-
-  const gn = document.getElementById('glossaryNames').value.trim();
-  const gt = document.getElementById('glossaryTerms').value.trim();
-  const dc = document.getElementById('domainContext').value.trim();
-
-  const files = [...state.pendingFiles];
-  let successCount = 0;
-  let firstVideoId = null;
-
-  // Upload all files in parallel
-  const uploadPromises = files.map(file => uploadSingleFile(file, gn, gt, dc));
-  const results = await Promise.allSettled(uploadPromises);
-
-  results.forEach((result, i) => {
-    const file = files[i];
-    const progBar = document.getElementById(`prog-${CSS.escape(file.name)}`);
-    if (result.status === 'fulfilled') {
-      successCount++;
-      if (!firstVideoId) firstVideoId = result.value.video_id;
-      if (progBar) {
-        progBar.style.width = '100%';
-        progBar.style.background = 'var(--success)';
-      }
-    } else {
-      if (progBar) {
-        progBar.style.width = '100%';
-        progBar.style.background = 'var(--error)';
-      }
     }
-  });
 
-  statusLabel.textContent = successCount === files.length
-    ? `All ${successCount} video${successCount > 1 ? 's' : ''} uploaded — processing started`
-    : `${successCount}/${files.length} uploaded successfully`;
+    async function startUpload() {
+      if (state.pendingFiles.length === 0) return;
 
-  await loadVideos();
-  if (firstVideoId) selectVideo(firstVideoId);
+      const btn = document.getElementById('uploadBtn');
+      const cancelBtn = document.getElementById('cancelUploadBtn');
+      const statusLabel = document.getElementById('uploadStatusLabel');
 
-  setTimeout(() => {
-    document.getElementById('uploadModal').style.display = 'none';
-  }, 1500);
-}
+      btn.disabled = true;
+      cancelBtn.textContent = 'Close';
+      statusLabel.style.display = 'block';
 
-function uploadSingleFile(file, glossaryNames, glossaryTerms, domainContext) {
-  return new Promise((resolve, reject) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    if (glossaryNames) formData.append('glossary_names', glossaryNames);
-    if (glossaryTerms) formData.append('glossary_terms', glossaryTerms);
-    if (domainContext) formData.append('domain_context', domainContext);
+      const gn = document.getElementById('glossaryNames').value.trim();
+      const gt = document.getElementById('glossaryTerms').value.trim();
+      const dc = document.getElementById('domainContext').value.trim();
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${API}/api/upload`);
+      const files = [...state.pendingFiles];
+      let successCount = 0;
+      let firstVideoId = null;
 
-    xhr.upload.onprogress = (e) => {
-      if (e.lengthComputable) {
-        const pct = (e.loaded / e.total) * 100;
-        const bar = document.getElementById(`prog-${CSS.escape(file.name)}`);
-        if (bar) bar.style.width = `${pct}%`;
-      }
-    };
+      // Upload all files in parallel
+      const uploadPromises = files.map(file => uploadSingleFile(file, gn, gt, dc));
+      const results = await Promise.allSettled(uploadPromises);
 
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        resolve(JSON.parse(xhr.responseText));
-      } else {
-        reject(new Error(`Upload failed: ${xhr.status}`));
-      }
-    };
+      results.forEach((result, i) => {
+        const file = files[i];
+        const progBar = document.getElementById(`prog-${CSS.escape(file.name)}`);
+        if (result.status === 'fulfilled') {
+          successCount++;
+          if (!firstVideoId) firstVideoId = result.value.video_id;
+          if (progBar) {
+            progBar.style.width = '100%';
+            progBar.style.background = 'var(--success)';
+          }
+        } else {
+          if (progBar) {
+            progBar.style.width = '100%';
+            progBar.style.background = 'var(--error)';
+          }
+        }
+      });
 
-    xhr.onerror = () => reject(new Error('Network error'));
-    xhr.send(formData);
-  });
-}
+      statusLabel.textContent = successCount === files.length
+        ? `All ${successCount} video${successCount > 1 ? 's' : ''} uploaded — processing started`
+        : `${successCount}/${files.length} uploaded successfully`;
 
-// ═══════════════════════════════════════════════════════════════════
-// Library drawer
-// ═══════════════════════════════════════════════════════════════════
+      await loadVideos();
+      if (firstVideoId) selectVideo(firstVideoId);
 
-function toggleDrawer() {
-  state.drawerOpen = !state.drawerOpen;
-  const body = document.getElementById('drawerBody');
-  const title = document.getElementById('drawerTitle');
-  body.style.display = state.drawerOpen ? 'flex' : 'none';
-  title.textContent = `${state.drawerOpen ? '▲' : '▼'} VIDEO LIBRARY`;
-}
+      setTimeout(() => {
+        document.getElementById('uploadModal').style.display = 'none';
+      }, 1500);
+    }
 
-// ═══════════════════════════════════════════════════════════════════
-// Helpers
-// ═══════════════════════════════════════════════════════════════════
+    function uploadSingleFile(file, glossaryNames, glossaryTerms, domainContext) {
+      return new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        if (glossaryNames) formData.append('glossary_names', glossaryNames);
+        if (glossaryTerms) formData.append('glossary_terms', glossaryTerms);
+        if (domainContext) formData.append('domain_context', domainContext);
 
-function fmtTime(seconds) {
-  if (!seconds && seconds !== 0) return '0:00';
-  const s = Math.floor(seconds);
-  const m = Math.floor(s / 60);
-  const rem = s % 60;
-  return `${m}:${rem.toString().padStart(2, '0')}`;
-}
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${API}/api/upload`);
 
-function escHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const pct = (e.loaded / e.total) * 100;
+            const bar = document.getElementById(`prog-${CSS.escape(file.name)}`);
+            if (bar) bar.style.width = `${pct}%`;
+          }
+        };
 
-function formatMarkdown(text) {
-  if (!text) return '';
-  return text
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n/g, '<br>')
-    .replace(/^/, '<p>')
-    .replace(/$/, '</p>');
-}
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            resolve(JSON.parse(xhr.responseText));
+          } else {
+            reject(new Error(`Upload failed: ${xhr.status}`));
+          }
+        };
 
-function showError(msg) {
-  const area = document.getElementById('messagesArea');
-  const div = document.createElement('div');
-  div.style.cssText = 'font-size:12px;color:var(--error);text-align:center;padding:8px;';
-  div.textContent = `⚠ ${msg}`;
-  area.appendChild(div);
-}
-</script>
+        xhr.onerror = () => reject(new Error('Network error'));
+        xhr.send(formData);
+      });
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // Library drawer
+    // ═══════════════════════════════════════════════════════════════════
+
+    function toggleDrawer() {
+      state.drawerOpen = !state.drawerOpen;
+      const body = document.getElementById('drawerBody');
+      const title = document.getElementById('drawerTitle');
+      body.style.display = state.drawerOpen ? 'flex' : 'none';
+      title.textContent = `${state.drawerOpen ? '▲' : '▼'} VIDEO LIBRARY`;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // Helpers
+    // ═══════════════════════════════════════════════════════════════════
+
+    function fmtTime(seconds) {
+      if (!seconds && seconds !== 0) return '0:00';
+      if (!isFinite(seconds)) return '0:00';
+      const s = Math.floor(seconds);
+      const m = Math.floor(s / 60);
+      const rem = s % 60;
+      return `${m}:${rem.toString().padStart(2, '0')}`;
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function formatMarkdown(text) {
+      if (!text) return '';
+      return text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>')
+        .replace(/^/, '<p>')
+        .replace(/$/, '</p>');
+    }
+
+    function showError(msg) {
+      const area = document.getElementById('messagesArea');
+      const div = document.createElement('div');
+      div.style.cssText = 'font-size:12px;color:var(--error);text-align:center;padding:8px;';
+      div.textContent = `⚠ ${msg}`;
+      area.appendChild(div);
+    }
+  </script>
 </body>
+
 </html>

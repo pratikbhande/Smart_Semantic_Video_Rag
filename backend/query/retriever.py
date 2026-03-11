@@ -25,9 +25,10 @@ def _get_client() -> AsyncOpenAI:
 
 async def expand_query(question: str) -> str:
     """
-    Expand query with related concepts and synonyms using GPT-4o-mini.
-    Returns an enriched query string for better semantic embedding coverage.
-    Falls back to the original question on any error.
+    Conservatively expand query: expand acronyms and add exact alternative names only.
+    Does NOT add broader related topics — keeps semantic meaning tight so the right
+    video is retrieved, not a thematically adjacent one.
+    Falls back to original question on any error.
     """
     try:
         client = _get_client()
@@ -37,19 +38,26 @@ async def expand_query(question: str) -> str:
                 {
                     "role": "system",
                     "content": (
-                        "You are a search query optimizer for a video content retrieval system. "
-                        "Rewrite the user's question as an enriched search query by adding: "
-                        "related concepts, synonyms, alternative phrasings, and domain-specific terms. "
-                        "Output ONLY the enriched query — one line, no explanation, no bullet points."
+                        "Given a search query, output the query plus acronym expansions and "
+                        "exact alternative names for the same specific concept. "
+                        "Do NOT add broader related topics or tangential concepts. "
+                        "Output only one line — the enriched query, nothing else.\n"
+                        "Examples:\n"
+                        "  'what is MCP?' → 'what is MCP Model Context Protocol'\n"
+                        "  'explain RAG' → 'explain RAG retrieval augmented generation'\n"
+                        "  'how does RLHF work' → 'how does RLHF reinforcement learning human feedback work'"
                     ),
                 },
                 {"role": "user", "content": question},
             ],
-            max_tokens=120,
-            temperature=0.2,
+            max_tokens=80,
+            temperature=0.0,
         )
         expansion = resp.choices[0].message.content.strip()
-        return f"{question} {expansion}"
+        # Only use expansion if it's a modest addition (not a complete rewrite)
+        if len(expansion) < len(question) * 4:
+            return expansion
+        return question
     except Exception as e:
         logger.warning(f"Query expansion failed: {e}, using original question")
         return question
@@ -66,11 +74,9 @@ async def retrieve(
     """
     k = top_k or settings.retrieval_top_k
 
-    # Expand query for richer semantic coverage, then embed
     expanded_q = await expand_query(question)
     query_embedding = await embed_text(expanded_q)
 
-    # Search vector store
     results = await search_chunks(query_embedding, video_id, top_k=k)
 
     logger.info(f"Retrieved {len(results)} candidates for '{question[:50]}...'")
@@ -83,25 +89,27 @@ async def retrieve_multi(
     top_k: int = None,
 ) -> List[Dict[str, Any]]:
     """
-    Embed the question once and retrieve from multiple videos, merging results.
-    Returns list of result dicts sorted by similarity, with video_id in metadata.
+    Embed the question once, search all videos in parallel, merge by similarity.
+    Returns top_k*2 candidates for the reranker to score.
     """
     k = top_k or settings.retrieval_top_k
 
-    # Expand query once, embed once — shared across all videos
     expanded_q = await expand_query(question)
     query_embedding = await embed_text(expanded_q)
 
-    # Search each video and merge
+    # Search all videos in parallel — faster than sequential for 10 videos
+    tasks = [search_chunks(query_embedding, vid, top_k=k) for vid in video_ids]
+    per_video_results = await asyncio.gather(*tasks)
+
     all_results: List[Dict[str, Any]] = []
-    for vid in video_ids:
-        results = await search_chunks(query_embedding, vid, top_k=k)
+    for results in per_video_results:
         all_results.extend(results)
 
-    # Sort by similarity descending; return top_k*2 to give reranker more signal
+    # Sort by similarity — best chunks rise to top regardless of which video
     all_results.sort(key=lambda x: x["similarity"], reverse=True)
+
     logger.info(
-        f"Multi-retrieve: {len(all_results)} candidates from {len(video_ids)} videos "
+        f"Multi-retrieve: {len(all_results)} raw candidates from {len(video_ids)} videos "
         f"for '{question[:50]}...'"
     )
     return all_results[: k * 2]
@@ -119,7 +127,6 @@ async def discover_videos(
     """
     query_embedding = await embed_text(question)
 
-    # Score all videos in parallel
     async def score_video(vid: str) -> Dict[str, Any]:
         score = await get_video_top_score(query_embedding, vid, top_k=5)
         top_chunk = await get_top_chunk_for_video(query_embedding, vid) if score > min_score else None

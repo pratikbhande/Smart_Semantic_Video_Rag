@@ -49,77 +49,79 @@ async def generate_answer(
         for c in chunks[:3]
     )
 
-    # Build context
+    # Build context.
+    # Multi-video: include full video_id (opaque hash) in header for timestamp attribution.
+    # Filename is intentionally NOT included — GPT-4o will cite filenames in the answer if given.
+    # Single-video: no source label needed at all.
+    context_limit = 10 if is_multi else 8
     context_parts = []
-    for i, chunk in enumerate(chunks[:8]):
+    for chunk in chunks[:context_limit]:
         meta = chunk.get("metadata", {})
         start = float(meta.get("start_time", 0))
         end = float(meta.get("end_time", 0))
         topic = meta.get("topic_title", "")
         vid = meta.get("video_id", "")
-        fname = (video_map or {}).get(vid, vid)
-        text = chunk.get("text", "")[:1000]
-        source_label = f" | {fname}" if is_multi else ""
-        context_parts.append(
-            f"[Chunk {i+1}{source_label} | {start:.1f}s-{end:.1f}s | {topic}]\n{text}"
-        )
+        text = chunk.get("text", "")[:2500]
+        if is_multi:
+            header = f"[{vid} | {start:.1f}s–{end:.1f}s | {topic}]"
+        else:
+            header = f"[{start:.1f}s–{end:.1f}s | {topic}]"
+        context_parts.append(f"{header}\n{text}")
 
     context = "\n\n---\n\n".join(context_parts)
-    duration_info = f"Video duration: {video_duration:.1f}s. " if video_duration else ""
+
+    if is_visual_only:
+        content_type_note = (
+            "The context contains visual analysis: OCR text, scene descriptions, "
+            "and speaker names extracted from the video frames. No audio transcript."
+        )
+        ts_note = "the timestamp of the most relevant keyframe"
+    else:
+        content_type_note = (
+            "The context contains spoken transcript lines prefixed with exact timestamps like [47.3s]. "
+            "Each [Xs] marker is the precise second that content appears."
+        )
+        ts_note = (
+            "the exact [Xs] timestamp of the single transcript line that most directly answers the question — "
+            "NOT the chunk start/end boundary time"
+        )
 
     if is_multi:
-        ts_format = '{"start": float, "end": float, "relevance": 0-1, "video_id": "video_id_string"}'
-        extra_rules = (
-            "- Each timestamp MUST include the video_id field\n"
-            "- Cite which video each piece of information comes from\n"
-            "- When the answer is about a specific speaker/person, clearly state their timestamp and which video\n"
-            "- Even if the exact question phrase isn't in the context, if you find a speaker name and timestamp, report it"
+        ts_format = '{"start": float, "end": float, "relevance": 0-1, "video_id": "exact_video_id_from_header"}'
+        source_vid_fmt = '"source_video_id": "exact_video_id_from_the_header_of_the_passage_that_most_directly_answers"'
+        supporting_fmt = (
+            '"supporting_videos": [{"video_id": "exact_video_id_from_header", '
+            '"snippet": "one sentence of what relevant content exists on this topic", '
+            '"timestamp": float}, ...]'
         )
     else:
         ts_format = '{"start": float, "end": float, "relevance": 0-1}'
-        extra_rules = "- Only reference timestamps from the provided context"
+        source_vid_fmt = '"source_video_id": null'
+        supporting_fmt = '"supporting_videos": []'
 
-    if is_visual_only:
-        context_desc = (
-            "The context contains visual analysis of video keyframes: "
-            "frame descriptions, on-screen text (OCR), detected speaker names from lower-third overlays, "
-            "and technical content flags. There is no audio transcript."
-        )
-        answer_guidance = (
-            "Answer based on what is visible on screen: descriptions, on-screen text, "
-            "speaker names detected in lower-thirds, and visual content. "
-            "Be natural — do not expose internal labels like [TOPIC:] or [Chunk N]."
-        )
-    else:
-        context_desc = (
-            "The context contains transcript lines prefixed with EXACT timestamps like [47.3s] Speaker: text. "
-            "Each [Xs] marker is the precise second that line was spoken in the video."
-        )
-        answer_guidance = (
-            "For primary_timestamp: identify the SINGLE transcript line that most directly answers the question, "
-            "then use its exact [Xs] value — NOT the chunk start/end time. "
-            "If multiple lines are relevant, pick the one with the most specific, direct answer. "
-            "Be natural — do not expose internal labels like [TOPIC:] or chunk boundaries."
-        )
+    system_prompt = f"""You are a knowledgeable expert. You have been given excerpts from recorded content as your knowledge base. Answer the user's question using the information in those excerpts.
 
-    system_prompt = f"""You are an intelligent video content assistant. {duration_info}
+{content_type_note}
 
-{context_desc}
+RULES:
+- Answer DIRECTLY as a subject matter expert. Write about the topic itself.
+- NEVER write "Primary Video:", "Also covered in:", "In this recording...", "This video discusses..."
+- NEVER mention filenames, video names, or refer to a "video" as a source
+- Use markdown (bold, bullets, headers) to organize the topic content
+- Quote or paraphrase actual spoken/written content from the excerpts
+- Be comprehensive: include specific facts, terminology, examples, and details
 
-{answer_guidance}
+Return a JSON object with these exact fields:
+- "answer": your expert answer about the topic — no source commentary, no meta-references
+- {source_vid_fmt}
+- "primary_timestamp": float — {ts_note}
+- "timestamps": array of {ts_format} — up to 6 most relevant moments ordered by relevance
+- {supporting_fmt}
 
-Return a JSON object with:
-- "answer": natural, helpful answer in markdown. Do NOT include raw labels like [TOPIC: Full Video] or chunk headers.
-- "timestamps": array of {ts_format}
-- "primary_timestamp": float — the exact second where the most relevant content appears
-
-Rules:
-- {extra_rules}
-- If asking about a specific person/speaker, use the timestamp where they appear on screen
-- Search the context for any matching names, timestamps, speaker events, or screen text before saying content is absent
-- If a speaker name is found in context at any timestamp, report it with that timestamp — even if surrounding text differs from the question phrasing
-- For visual-only videos: use keyframe timestamps as primary_timestamp
-- primary_timestamp must be a real time value from the context, not 0.0 unless content is at the start"""
+Rules for primary_timestamp:
+- Must NOT be 0.0 unless the answer genuinely begins at the very start
+- Use the exact [Xs] value from the transcript, not the chunk boundary time
+- Search all excerpts before concluding content is absent"""
 
     try:
         client = _get_client()
@@ -131,16 +133,17 @@ Rules:
             ],
             response_format={"type": "json_object"},
             temperature=0.3,
-            max_tokens=1500,
+            max_tokens=2500,
         )
         result = json.loads(resp.choices[0].message.content)
 
         raw_timestamps = result.get("timestamps", [])
         timestamps = []
+
         for t in raw_timestamps:
             if isinstance(t, dict):
                 try:
-                    ts_vid_id = t.get("video_id")
+                    ts_vid_id = t.get("video_id") or None
                     ts_vid_fname = (video_map or {}).get(ts_vid_id) if ts_vid_id else None
                     timestamps.append(TimestampRef(
                         start=float(t.get("start", 0)),
@@ -159,42 +162,83 @@ Rules:
             except (ValueError, TypeError):
                 primary_ts = None
 
-        # Validate / snap primary_ts to known segment or frame timestamps
-        all_known_ts: List[float] = []
-        for c in chunks:
+        # --- Step 1: Determine source_video_id ---
+        # Priority: GPT-4o's explicit source_video_id > chunk-based derivation.
+        # GPT-4o reads the context headers (which include the full video_id hash)
+        # and can directly identify which passage answers the question.
+        source_vid = None
+        if is_multi:
+            gpt_source = result.get("source_video_id", "")
+            if gpt_source and gpt_source in (video_map or {}):
+                source_vid = gpt_source
+
+        # Fallback: find which chunk's time range contains primary_ts
+        if not source_vid and primary_ts is not None:
+            for c in chunks:
+                meta = c.get("metadata", {})
+                cs = float(meta.get("start_time", 0))
+                ce = float(meta.get("end_time", cs + 35))
+                if cs - 2.0 <= primary_ts <= ce + 2.0:
+                    source_vid = meta.get("video_id")
+                    break
+
+        # Fallback: use video_id from the highest-relevance timestamp
+        if not source_vid and timestamps:
+            pt = primary_ts or 0.0
+            closest = min(timestamps, key=lambda t: abs(t.start - pt))
+            source_vid = closest.video_id
+
+        # Final fallback: top reranked chunk
+        if not source_vid:
+            source_vid = chunks[0].get("metadata", {}).get("video_id") if chunks else None
+
+        # --- Step 2: Validate / snap primary_ts using SOURCE VIDEO's timestamps only ---
+        # By scoping to the source video, we avoid snapping to timestamps from other videos.
+        source_chunks = [
+            c for c in chunks
+            if c.get("metadata", {}).get("video_id") == source_vid
+        ] if source_vid else chunks
+
+        known_ts: List[float] = []
+        for c in source_chunks:
             meta = c.get("metadata", {})
             seg_json = meta.get("segment_timestamps", "")
             if seg_json:
                 try:
                     segs = json.loads(seg_json)
-                    all_known_ts.extend(float(s["start"]) for s in segs if "start" in s)
+                    known_ts.extend(float(s["start"]) for s in segs if "start" in s)
                 except Exception:
                     pass
-            all_known_ts.append(float(meta.get("start_time", 0)))
+            known_ts.append(float(meta.get("start_time", 0)))
 
-        all_known_ts = sorted(set(all_known_ts))
+        known_ts = sorted(set(known_ts))
 
-        if all_known_ts:
-            if primary_ts is not None:
+        if known_ts:
+            if primary_ts is not None and primary_ts != 0.0:
                 within_range = any(
                     float(c.get("metadata", {}).get("start_time", 0)) - 1.0
                     <= primary_ts
                     <= float(c.get("metadata", {}).get("end_time", 0)) + 1.0
-                    for c in chunks
+                    for c in source_chunks
                 )
                 if not within_range:
-                    primary_ts = min(all_known_ts, key=lambda t: abs(t - primary_ts))
-            else:
-                # Default to chunk with highest score
-                primary_ts = float(chunks[0].get("metadata", {}).get("start_time", 0))
+                    primary_ts = min(known_ts, key=lambda t: abs(t - primary_ts))
+            elif primary_ts is None or primary_ts == 0.0:
+                # Default: first segment of the source video's top chunk (not t=0)
+                first_seg = next(
+                    (t for t in known_ts if t > 0.5),
+                    known_ts[0] if known_ts else None
+                )
+                if first_seg is not None:
+                    primary_ts = first_seg
 
-        # Refine: if primary_ts is a chunk boundary, find the most query-relevant segment within it
+        # Refine: snap from chunk boundary to most query-relevant exact segment
         if primary_ts is not None:
-            primary_ts = _refine_to_segment(question, primary_ts, chunks)
+            primary_ts = _refine_to_segment(question, primary_ts, source_chunks)
 
-        # Inject fallback timestamps from top chunks if LLM returned none
-        if not timestamps and chunks:
-            for c in chunks[:3]:
+        # Inject fallback timestamps from source video's top chunks if LLM returned none
+        if not timestamps and source_chunks:
+            for c in source_chunks[:3]:
                 meta = c.get("metadata", {})
                 vid_id = meta.get("video_id")
                 vid_fname = (video_map or {}).get(vid_id) if vid_id else None
@@ -206,7 +250,20 @@ Rules:
                     video_filename=vid_fname,
                 ))
 
-        source_vid = chunks[0].get("metadata", {}).get("video_id") if chunks else None
+        # Parse supporting_videos returned by GPT-4o
+        supporting_videos = []
+        for sv in result.get("supporting_videos", []):
+            if not isinstance(sv, dict):
+                continue
+            full_id = sv.get("video_id", "")
+            if not full_id or full_id == source_vid:
+                continue  # skip primary video and invalid entries
+            supporting_videos.append({
+                "video_id": full_id,
+                "video_filename": (video_map or {}).get(full_id, ""),
+                "snippet": sv.get("snippet", ""),
+                "timestamp": float(sv.get("timestamp", 0)),
+            })
 
         relevant_chunks = []
         for c in chunks[:5]:
@@ -229,6 +286,7 @@ Rules:
             primary_timestamp=primary_ts,
             relevant_chunks=relevant_chunks,
             source_video_id=source_vid,
+            supporting_videos=supporting_videos,
         )
 
     except Exception as e:

@@ -4,6 +4,8 @@ Extract audio from video using ffmpeg, then split into overlapping chunks for tr
 import asyncio
 import json
 import logging
+import os
+import tempfile
 from pathlib import Path
 from typing import List, Tuple
 
@@ -44,23 +46,61 @@ async def extract_audio(video_path: str, video_id: str) -> str:
 
 
 async def check_audio_stream(video_path: str) -> bool:
-    """Returns True if the video has at least one audio stream."""
+    """
+    Returns True if the video has an extractable audio track.
+
+    Uses two methods to avoid false negatives on Chrome/browser WebM recordings
+    where ffprobe's -select_streams filter can miss Opus audio streams:
+
+    1. ffprobe — scan ALL streams, look for codec_type == "audio"
+    2. ffmpeg short extraction — if ffprobe misses it, try actually extracting
+       3 seconds of audio; success with a non-trivial output file = audio exists
+    """
+    # Method 1: ffprobe — inspect all streams, match on codec_type
     cmd = [
         "ffprobe", "-v", "quiet", "-print_format", "json",
-        "-show_streams", "-select_streams", "a", video_path
+        "-show_streams", video_path  # no -select_streams filter — check everything
     ]
     proc = await asyncio.create_subprocess_exec(
         *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
     )
     stdout, _ = await proc.communicate()
-    if proc.returncode != 0:
-        return False
+    if proc.returncode == 0:
+        try:
+            streams = json.loads(stdout.decode()).get("streams", [])
+            if any(s.get("codec_type") == "audio" for s in streams):
+                return True
+        except Exception:
+            pass
+
+    # Method 2: attempt to extract a 3-second audio sample via ffmpeg.
+    # Catches edge cases where ffprobe mislabels the stream (common in WebM).
+    tmp = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+    tmp.close()
     try:
-        info = json.loads(stdout.decode())
-        streams = info.get("streams", [])
-        return len(streams) > 0
+        probe_cmd = [
+            "ffmpeg", "-y", "-i", video_path,
+            "-t", "3", "-vn",
+            "-acodec", "pcm_s16le", "-ar", "16000", "-ac", "1",
+            tmp.name
+        ]
+        proc2 = await asyncio.create_subprocess_exec(
+            *probe_cmd,
+            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+        )
+        await proc2.communicate()
+        if proc2.returncode == 0 and os.path.getsize(tmp.name) > 1000:
+            logger.info(f"Audio detected via extraction fallback for {Path(video_path).name}")
+            return True
     except Exception:
-        return False
+        pass
+    finally:
+        try:
+            os.unlink(tmp.name)
+        except Exception:
+            pass
+
+    return False
 
 
 async def get_video_duration(video_path: str) -> float:
