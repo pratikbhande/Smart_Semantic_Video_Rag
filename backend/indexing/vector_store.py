@@ -59,12 +59,12 @@ async def index_chunks(
         if chunk.chunk_type == ChunkType.summary:
             summary_ids.append(chunk.id)
             summary_embeddings.append(embedding)
-            summary_docs.append(chunk.text[:2000])
+            summary_docs.append(chunk.text[:5000])
             summary_metas.append(meta)
         else:
             detail_ids.append(chunk.id)
             detail_embeddings.append(embedding)
-            detail_docs.append(chunk.text[:2000])
+            detail_docs.append(chunk.text[:3500])
             detail_metas.append(meta)
 
     summary_col = _get_collection(settings.summary_collection)

@@ -338,8 +338,10 @@ async def query_video(req: QueryRequest):
 
     video_map = {v.id: v.filename for v in videos}
 
+    is_multi = len(video_ids) > 1
+
     # Retrieve
-    if len(video_ids) == 1:
+    if not is_multi:
         candidates = await retrieve(video_ids[0], req.question)
     else:
         candidates = await retrieve_multi(video_ids, req.question)
@@ -350,15 +352,14 @@ async def query_video(req: QueryRequest):
             timestamps=[], primary_timestamp=None, relevant_chunks=[]
         )
 
-    # Rerank
-    top_chunks = await rerank(req.question, candidates)
+    top_chunks = await rerank(req.question, candidates, top_k=settings.rerank_top_k)
 
     # Generate answer — pass video_map for multi-video attribution
-    single_duration = videos[0].duration if len(videos) == 1 else None
+    single_duration = videos[0].duration if not is_multi else None
     response = await generate_answer(
         req.question, top_chunks,
         video_duration=single_duration,
-        video_map=video_map,
+        video_map=video_map if is_multi else None,
     )
     return response
 

@@ -183,7 +183,8 @@ async def run_pipeline(
 
         # ── Stage 9: Build chunks ──────────────────────────────────────────
         await progress("chunking", 75, "Building hierarchical chunks")
-        chunks = build_chunks(video_id, segments, topics, keyframes, speaker_events)
+        filename = Path(video_path).name
+        chunks = build_chunks(video_id, segments, topics, keyframes, speaker_events, filename=filename)
 
         # ── Stage 10: Clear old index ──────────────────────────────────────
         await progress("indexing", 80, "Clearing old index")

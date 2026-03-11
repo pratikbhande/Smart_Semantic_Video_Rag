@@ -44,7 +44,7 @@ class Settings(BaseSettings):
     summary_collection: str = "video_summary_v2"
     detail_collection: str = "video_detail_v2"
     retrieval_top_k: int = 20
-    rerank_top_k: int = 5
+    rerank_top_k: int = 8
 
     class Config:
         env_file = ".env"

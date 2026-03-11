@@ -108,7 +108,8 @@ class QueryResponse(BaseModel):
     timestamps: List[TimestampRef] = Field(default_factory=list)
     primary_timestamp: Optional[float] = None
     relevant_chunks: List[Dict[str, Any]] = Field(default_factory=list)
-    source_video_id: Optional[str] = None  # video where the top result came from
+    source_video_id: Optional[str] = None  # video that primary_timestamp belongs to
+    supporting_videos: List[Dict[str, Any]] = Field(default_factory=list)  # other relevant videos for UI display
 
 
 class WebSocketMessage(BaseModel):

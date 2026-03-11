@@ -35,14 +35,16 @@ async def rerank(
         return []
 
     if len(candidates) <= k:
-        # No need to rerank if we already have few candidates
         for c in candidates:
             c["rerank_score"] = c.get("similarity", 0.0)
+            c["final_score"] = c.get("similarity", 0.0)
         return candidates[:k]
 
-    # Prepare chunks for reranking
+    # Score top 20 candidates — enough signal without overwhelming the LLM
+    rerank_window = min(len(candidates), 20)
+
     chunks_for_rerank = []
-    for i, c in enumerate(candidates[:20]):  # max 20 to rerank
+    for i, c in enumerate(candidates[:rerank_window]):
         meta = c.get("metadata", {})
         chunks_for_rerank.append({
             "index": i,
@@ -52,11 +54,15 @@ async def rerank(
             "text": c.get("text", "")[:400],
         })
 
-    system_prompt = """You are a relevance judge for video Q&A. Given a question and candidate passages,
-score each passage 0-10 for relevance to answering the question.
-
-Return JSON: {"scores": [{"index": 0, "score": 8.5, "reason": "..."}, ...]}
-Score 10 = directly answers question, 0 = completely irrelevant."""
+    system_prompt = (
+        "You are a relevance judge for video Q&A. Given a question and candidate passages, "
+        "score each 0-10 for how directly it answers the question.\n\n"
+        "Return JSON: {\"scores\": [{\"index\": 0, \"score\": 8.5}, ...]}\n"
+        "Score 10 = directly and specifically answers the question\n"
+        "Score 5  = topically related but not a direct answer\n"
+        "Score 0  = completely irrelevant\n"
+        "Score every passage."
+    )
 
     try:
         client = _get_client()
@@ -64,7 +70,7 @@ Score 10 = directly answers question, 0 = completely irrelevant."""
             model=settings.mini_model,
             messages=[
                 {"role": "system", "content": system_prompt},
-                {"role": "user", "content": f"Question: {question}\n\nPassages:\n{json.dumps(chunks_for_rerank, indent=2)[:3000]}"}
+                {"role": "user", "content": f"Question: {question}\n\nPassages:\n{json.dumps(chunks_for_rerank, indent=2)[:3500]}"}
             ],
             response_format={"type": "json_object"},
             temperature=0.1,
@@ -73,18 +79,19 @@ Score 10 = directly answers question, 0 = completely irrelevant."""
         result = json.loads(resp.choices[0].message.content)
         scores = {s["index"]: s["score"] / 10.0 for s in result.get("scores", [])}
 
-        # Apply rerank scores
-        for i, c in enumerate(candidates[:20]):
+        for i, c in enumerate(candidates[:rerank_window]):
             c["rerank_score"] = scores.get(i, c.get("similarity", 0.0))
 
-        # Combine similarity + rerank score
-        for c in candidates[:20]:
+        # Combine: embedding similarity (grounding) + LLM relevance score (precision)
+        for c in candidates[:rerank_window]:
             c["final_score"] = (
                 0.4 * c.get("similarity", 0.0) +
                 0.6 * c.get("rerank_score", 0.0)
             )
 
-        candidates[:20] = sorted(candidates[:20], key=lambda x: x["final_score"], reverse=True)
+        candidates[:rerank_window] = sorted(
+            candidates[:rerank_window], key=lambda x: x["final_score"], reverse=True
+        )
 
     except Exception as e:
         logger.warning(f"Reranking failed: {e}, using similarity scores")
