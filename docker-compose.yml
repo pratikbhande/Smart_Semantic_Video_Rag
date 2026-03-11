@@ -1,23 +1,29 @@
 services:
-  video-rag:
+  video-rag-v2:
     build: .
     ports:
-      - "8501:8501"
+      - "8000:8000"
     env_file:
       - .env
-    volumes:
-      # 🔥 Source code — edit locally, reflects instantly, no rebuild
-      - ./app:/app
-
-      # Persistent data — survives container restarts
-      - video_rag_data:/app/data
-
-      # Optional: cache Whisper + torch models across rebuilds
-      - model_cache:/root/.cache
-
     environment:
       - PYTHONUNBUFFERED=1
       - PYTHONDONTWRITEBYTECODE=1
+      - DATA_DIR=/data
+      - CHROMA_DIR=/data/chroma_db
+      - UPLOAD_DIR=/data/uploads
+      - KEYFRAMES_DIR=/data/keyframes
+      - AUDIO_DIR=/data/audio
+      - CHUNKS_DIR=/data/chunks
+    volumes:
+      # Live source code — edit locally, reflects on restart
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend
+
+      # Persistent data — survives container restarts
+      - video_rag_v2_data:/data
+
+      # Cache EasyOCR + other models across rebuilds
+      - model_cache:/root/.cache
 
     # Limits — tune to your machine
     deploy:
@@ -28,5 +34,5 @@ services:
     restart: unless-stopped
 
 volumes:
-  video_rag_data:
+  video_rag_v2_data:
   model_cache:
